@@ -1,0 +1,70 @@
+.book{
+    display:flex;
+    flex-direction: row;
+    margin: 20px;
+    flex-wrap:wrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+.imgbox{
+    display:flex;
+    flex-direction: column;
+    width:40%;
+    margin-right:30px;
+    height:5%;
+}
+.info{
+    display:flex;
+    flex-direction: column;
+    width:40%; 
+}
+.info div{
+    margin-bottom:20px;
+}
+.description {
+   margin-bottom:20px;
+   font-size:medium;
+   line-height:30px;
+}
+.title, .price{
+    font-size:30px;
+    font-weight:bold;
+}
+.price{
+    color:#d63447;
+}
+.author{
+    margin-top:-15px;
+}
+.info div b{
+    font-size:18px;
+}
+.button{
+    font-size:18px;
+    height: 60px;
+    text-transform: uppercase;
+}
+.shipping_return{
+    display: flex;
+    flex-direction: column;
+}
+.shipping{
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+}
+.return{
+    display: flex;
+    flex-direction: row;
+}
+.shipping div, .return div{
+    margin-left: 15px;
+}
+.return div{
+    margin-bottom: 0;
+}
+.shipping div p, .return div p{
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 0;
+}
