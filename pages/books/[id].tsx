@@ -64,7 +64,7 @@ export async function createOrderItem(orderBookId: any) {
     const { data } = await client.mutate({
         mutation: gql`
         mutation MutationCreateOrderItem($id:ID!) {
-            createOrderItem(data: { quantity: 10, product: { connect: { id: $id } } }) {
+            createOrderItem(data: { quantity: 1, product: { connect: { id: $id } } }) {
               quantity
               product {
                 title
