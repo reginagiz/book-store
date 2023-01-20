@@ -1,0 +1,30 @@
+.header{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    height: 100px;
+}
+.logobox img{
+    display: flex;
+    margin:0;
+    width: 200px;
+    height: 180px;
+    margin-left:50px;
+}
+.button{
+    display: flex;
+    margin-right:90px;
+    align-items: flex-end;
+}
+.books{
+    display: flex;
+    text-transform: uppercase;
+    font-size: large;
+    align-items: flex-end;
+    background-color: inherit;
+    border: none;
+    margin-right:110px;
+}
+.books:hover{
+    transform: scale(1.2);
+}

@@ -1,10 +1,11 @@
-import { gql } from "@apollo/client";
-import client from "../../helpers/appolo-client"
 import Link from "next/link";
-import { Card } from 'antd';
 import React from 'react';
 import { Table, Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { useMutation, useQuery} from "@apollo/client";
+import {ITEMS_QUERY} from "../api/query/getOrderItems";
+import {DELETE_ORDER_ITEM} from "../api/mutation/deleteOrderItem";
+import s from './Cart.module.css'
 
 interface DataType {
   key: string;
@@ -13,7 +14,20 @@ interface DataType {
   address: string;
   id: string;
 }
-export default function Cart({ data }: any) {
+
+export default function Cart() {
+  const [deleteOrderItem] = useMutation(DELETE_ORDER_ITEM, {
+    refetchQueries: [{ query: ITEMS_QUERY }]
+  });
+
+  const { data, loading, error } = useQuery(ITEMS_QUERY);
+  if (loading) {
+    return <p>loading...</p>;
+  }
+  if (error) {
+    return <p>Ruh roh! {error.message}</p>;
+  }
+
   const columns: ColumnsType<DataType> = [
     {
       title: '',
@@ -31,9 +45,9 @@ export default function Cart({ data }: any) {
     },
     {
       title: 'Title',
-      dataIndex: ['product', 'title'],
-      key: 'title',
-      render: (text) => <a>{text}</a>,
+      dataIndex: 'product',
+      key: 'product',
+      render: (product) => <Link href={`/books/${product.id}`}>{product.title}</Link>,
     },
     {
       title: 'Author',
@@ -54,61 +68,24 @@ export default function Cart({ data }: any) {
     {
       title: 'Remove',
       key: 'action',
-      render: (_, product) => (
-        <Button onClick={() => DeleteOrderItem({ params: { id: product.id }})}>X</Button >
-    ),
-  } 
-];
-return (
-  <Table columns={columns} dataSource={data} />
-);
+      render: (_, productItem) => (
+        <Button onClick={() => deleteOrderItem({ variables: { id: productItem.id } })}>X</Button >
+      ),
+    }
+  ];
+  return (
+    <div className= {s.cart}>
+       <div className={s.title}>My shopping cart</div>
+       <div className={s.table_container}>
+       <Table columns={columns} dataSource={data.orderItems} pagination={false}/>
+       <div className={s.delivery_total}>
+        <div className={s.delivery}>Delivery : 0 USD</div>
+       <div className={s.total}>Total :  USD</div>
+       </div>
+       </div>
+    </div>
+   
+  );
 }
-export async function getStaticProps() {
-  const { data } = await client.query({
-    query: gql`
-        query{
-            orderItems{
-              id
-              quantity
-              product{
-                title
-                avatar{
-                    url
-                }
-                author{
-                  name
-                }
-                price
-              }
-            }
-            }
-      `,
-  });
-  return {
-    props: {
-      data: data.orderItems,
-    },
-  };
-}
-export async function DeleteOrderItem({ params }: any) {
-  const { id } = params;
-  const { data } = await client.mutate({
-    mutation: gql`
-        mutation MutationDeleteOrderItem($id:ID!) {
-            deleteOrderItem(where: { id: $id }){
-              id
-              product{
-                id
-              }
-              quantity 
-              }
-            }    
-        `,
-    variables: { id },
-  });
-  return {
-    props: {
-      data: data.OrderItem,
-    },
-  };
-}
+
+

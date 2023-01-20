@@ -1,16 +1,18 @@
 .book{
     display:flex;
     flex-direction: row;
-    margin: 20px;
+    margin-top: 80px;
     flex-wrap:wrap;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
+    margin-left:90px;
+    margin-bottom: 50px;
 }
 .imgbox{
     display:flex;
     flex-direction: column;
     width:40%;
-    margin-right:30px;
+    margin-right:50px;
     height:5%;
 }
 .info{
