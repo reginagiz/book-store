@@ -5,6 +5,7 @@ import type { ColumnsType } from 'antd/es/table';
 import { useMutation, useQuery} from "@apollo/client";
 import {ITEMS_QUERY} from "../api/query/getOrderItems";
 import {DELETE_ORDER_ITEM} from "../api/mutation/deleteOrderItem";
+import {ITEMS_COUNT_QUERY} from '../api/query/getOrderItemsCount'
 import s from './Cart.module.css'
 
 interface DataType {
@@ -17,7 +18,7 @@ interface DataType {
 
 export default function Cart() {
   const [deleteOrderItem] = useMutation(DELETE_ORDER_ITEM, {
-    refetchQueries: [{ query: ITEMS_QUERY }]
+    refetchQueries: [{ query: ITEMS_QUERY }, { query: ITEMS_COUNT_QUERY }]
   });
 
   const { data, loading, error } = useQuery(ITEMS_QUERY);

@@ -1,23 +1,17 @@
-import { gql } from '@apollo/client';
-import client from '../../../helpers/appolo-client';
+import gql from 'graphql-tag';
 
-export async function getStaticProps() {
-  const { data } = await client.query({
-    query: gql`
-      query {
-        books {
-          id
-          title
-          year
-          genre
-        }
+export const BOOKS_QUERY = gql`
+  query BOOKS_QUERY {
+    books {
+      id
+      title
+      avatar{
+          url
       }
-    `,
-  });
+      author{
+          name
+        }
+    }
+  }
+`;
 
-  return {
-    props: {
-      data: data.books,
-    },
-  };
-}
