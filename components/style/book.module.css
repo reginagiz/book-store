@@ -27,6 +27,8 @@
    margin-bottom:20px;
    font-size:medium;
    line-height:30px;
+   max-height: 280px;
+   overflow: auto;
 }
 .title, .price{
     font-size:30px;

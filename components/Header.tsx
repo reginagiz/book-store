@@ -1,5 +1,5 @@
 import logo from '../logo.png'
-import s from './Header.module.css'
+import s from './style/Header.module.css'
 import Link from "next/link";
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { Button } from 'antd';

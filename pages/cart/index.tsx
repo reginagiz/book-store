@@ -6,7 +6,7 @@ import { useMutation, useQuery} from "@apollo/client";
 import {ITEMS_QUERY} from "../api/query/getOrderItems";
 import {DELETE_ORDER_ITEM} from "../api/mutation/deleteOrderItem";
 import {ITEMS_COUNT_QUERY} from '../api/query/getOrderItemsCount'
-import s from './Cart.module.css'
+import s from '../../components/style/Cart.module.css'
 
 interface DataType {
   key: string;
@@ -28,6 +28,14 @@ export default function Cart() {
   if (error) {
     return <p>Ruh roh! {error.message}</p>;
   }
+
+  const getTotal = () => {
+    let totalPrice = 0
+    data.orderItems?.forEach((orderItem :any) => {
+        totalPrice += orderItem.product.price * orderItem.quantity
+    })
+    return { totalPrice }
+}
 
   const columns: ColumnsType<DataType> = [
     {
@@ -81,7 +89,7 @@ export default function Cart() {
        <Table columns={columns} dataSource={data.orderItems} pagination={false}/>
        <div className={s.delivery_total}>
         <div className={s.delivery}>Delivery : 0 USD</div>
-       <div className={s.total}>Total :  USD</div>
+       <div className={s.total}>Total : {getTotal().totalPrice} USD</div>
        </div>
        </div>
     </div>

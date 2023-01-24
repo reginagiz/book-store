@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Card } from 'antd';
-import s from './allBooks.module.css'
+import s from '../../components/style/allBooks.module.css'
 import { useQuery} from "@apollo/client";
 import {BOOKS_QUERY} from '../api/query/getAllBooks'
 
