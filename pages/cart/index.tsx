@@ -7,6 +7,7 @@ import {ITEMS_QUERY} from "../api/query/getOrderItems";
 import {DELETE_ORDER_ITEM} from "../api/mutation/deleteOrderItem";
 import {ITEMS_COUNT_QUERY} from '../api/query/getOrderItemsCount'
 import s from '../../components/style/Cart.module.css'
+// import client from "@/helpers/appolo-client";
 
 interface DataType {
   key: string;
@@ -28,6 +29,8 @@ export default function Cart() {
   if (error) {
     return <p>Ruh roh! {error.message}</p>;
   }
+
+    
 
   const getTotal = () => {
     let totalPrice = 0

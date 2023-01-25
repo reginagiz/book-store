@@ -5,36 +5,58 @@ import { ShoppingOutlined, ExportOutlined } from '@ant-design/icons';
 import { useMutation, useQuery } from "@apollo/client";
 import { BOOK_QUERY } from '../api/query/getBook';
 import { useRouter } from 'next/router'
+import { UPDATE_ORDER_ITEM } from '../api/mutation/updateOrdrItem'
 import { CREATE_ORDER_ITEM } from '../api/mutation/createOrderItem'
 import { ITEMS_COUNT_QUERY } from '../api/query/getOrderItemsCount'
 import { ITEMS_QUERY } from "../api/query/getOrderItems";
-import {openNotification} from '../../components/Notification'
+import { openNotification } from '../../components/Notification'
+import { useState, useEffect } from "react";
 
 
 export default function Book() {
     const router = useRouter()
-    const id = router.query.id as string
+    const id = router.query.id as string;
+    const [cartItem, setCartItem] = useState<any>();
+
+    const { data: bookData, loading, error } = useQuery(BOOK_QUERY, { variables: { id } });
+
+
+    const { data: cart } = useQuery(ITEMS_COUNT_QUERY);
 
     const [createOrderItem] = useMutation(CREATE_ORDER_ITEM, {
         refetchQueries: [{ query: ITEMS_QUERY }, { query: ITEMS_COUNT_QUERY }]
     })
 
-    const createItem =({book}:any)=>{
-        createOrderItem({ variables: { id } });
-        openNotification({book})
+    const [updateOrderItem] = useMutation(UPDATE_ORDER_ITEM, {
+        refetchQueries: [{ query: ITEMS_QUERY }, { query: ITEMS_COUNT_QUERY }]
+    })
+
+    useEffect(() => {
+        if (cart?.orderItems) {
+            setCartItem(cart.orderItems.find((e) => e.product.id === id));
+        }
+    }, [cart])
+
+    const addItemToCart = () => {
+        if (cartItem) {
+            updateOrderItem({ variables: { id: cartItem.id, input: cartItem.quantity + 1 } });
+            openNotification(bookData)
+        } else {
+            createOrderItem({ variables: { id } })
+            openNotification(bookData)
+        }
     }
 
-    const { data, loading, error } = useQuery(BOOK_QUERY, { variables: { id } });
     if (loading) {
         return <p>loading...</p>;
     }
     if (error) {
         return <p>Ruh roh! {error.message}</p>;
     }
-    const { book } = data
 
-    return (
-        <div className={s.book}>
+    if (bookData) {
+        const { book } = bookData;
+        return (<div className={s.book}>
             <div className={s.imgbox}>
                 <img src={book.avatar.url} alt="example" />
             </div>
@@ -45,7 +67,8 @@ export default function Book() {
                 <div><b>Publish Date:</b> {book.year}</div>
                 <div><b>Genre:</b> {book.genre}</div>
                 <div className={s.description}><b>Description:</b> {book.description}</div>
-                <Button type="primary" className={s.button} onClick={() => createItem({book})}>Add to cart</Button>
+
+                <Button type="primary" className={s.button} onClick={addItemToCart}>Add to cart</Button>
                 <div className={s.shipping_return}>
                     <div className={s.shipping}>
                         <ShoppingOutlined style={{ fontSize: '50px' }} />
@@ -63,6 +86,8 @@ export default function Book() {
                     </div>
                 </div>
             </div>
-        </div>
-    );
+        </div>)
+    }
+
+
 }
