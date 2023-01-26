@@ -33,7 +33,7 @@ export default function Book() {
 
     useEffect(() => {
         if (cart?.orderItems) {
-            setCartItem(cart.orderItems.find((e) => e.product.id === id));
+            setCartItem(cart.orderItems.find((e: any) => e.product.id === id));
         }
     }, [cart])
 

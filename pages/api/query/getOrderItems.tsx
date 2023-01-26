@@ -1,5 +1,4 @@
 import { gql } from "@apollo/client";
-import client from "@/helpers/appolo-client";
 
 export const ITEMS_QUERY = gql`
   query ORDERS_QUERY {
@@ -7,6 +6,7 @@ export const ITEMS_QUERY = gql`
       id
       quantity
       product {
+        id
         title
         avatar {
           url

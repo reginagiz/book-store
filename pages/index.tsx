@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import Link from "next/link";
+import CarouselImage from '../components/Carousel';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,17 +17,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <div>
-          <div>My books store</div>
-
-        </div>
-        <p>Home page</p>
-        <p>
-          <Link href="/books">See the list of books</Link>
-        </p>
-        <p>
-          <Link href="/authors"> See all authors</Link>
-        </p>
+        <CarouselImage />
       </div>
     </>
   )

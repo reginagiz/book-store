@@ -7,7 +7,6 @@ import { Button } from 'antd';
 import { Badge } from 'antd';
 import { ITEMS_COUNT_QUERY } from '../pages/api/query/getOrderItemsCount';
 import { useQuery } from "@apollo/client";
-import client from '@/helpers/appolo-client';
 
 const Header = () => {
   const { data, loading, error } = useQuery(ITEMS_COUNT_QUERY);
