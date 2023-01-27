@@ -8,26 +8,7 @@ import { DELETE_ORDER_ITEM } from "../api/mutation/deleteOrderItem";
 import { ITEMS_COUNT_QUERY } from '../api/query/getOrderItemsCount'
 import { UPDATE_ORDER_ITEM } from '../api/mutation/updateOrdrItem'
 import s from '../../components/style/Cart.module.css'
-
-type CartItem = {
-  product: Product;
-  quantity: number;
-  id: number;
-};
-type Product = {
-  title: string;
-  price: number;
-  id: string;
-  quantity: number;
-  author: Author;
-  avatar: Avatar
-};
-type Author = {
-  name: string;
-};
-type Avatar = {
-  url: string;
-};
+import { CartItem } from "../api/types/Types";
 
 export default function Cart() {
   const [deleteOrderItem] = useMutation(DELETE_ORDER_ITEM, {
@@ -38,12 +19,6 @@ export default function Cart() {
   })
 
   const { data, loading, error } = useQuery(ITEMS_QUERY);
-  if (loading) {
-    return <p>loading...</p>;
-  }
-  if (error) {
-    return <p>Ruh roh! {error.message}</p>;
-  }
 
   const getTotal = () => {
     let totalPrice = 0
@@ -72,7 +47,7 @@ export default function Cart() {
       title: 'Title',
       dataIndex: 'product',
       key: 'product',
-      render: (product: Product) => <Link href={`/books/${product.id}`} >{product.title}</Link>,
+      render: (product) => <Link href={`/books/${product.id}`} >{product.title}</Link>,
     },
     {
       title: 'Author',
@@ -113,18 +88,32 @@ export default function Cart() {
       ),
     }
   ];
+
+  if (loading) {
+    return <p>loading...</p>;
+  }
+  if (error) {
+    return <p>Ruh roh! {error.message}</p>;
+  }
+
   return (
     <div className={s.cart}>
       <div className={s.title}>My shopping cart</div>
-      <div className={s.table_container}>
-        <Table columns={columns} dataSource={data.orderItems} pagination={false} />
+      <div className={s.table_total}>
+        <div className={s.table_container}>
+          <Table columns={columns} dataSource={data.orderItems} pagination={false} size='middle' />
+        </div>
         <div className={s.delivery_total}>
-          <div className={s.delivery}>Delivery : 0 USD</div>
-          <div className={s.total}>Total : {getTotal().totalPrice} USD</div>
+          <div className={s.delivery_total_title}>Order Summary</div>
+          <div className={s.delivery}>Delivery Total : <b>0 USD</b></div>
+          <div className={s.product_total}>Product Total : <b>{getTotal().totalPrice} USD</b></div>
+          <div className={s.line}></div>
+          <div className={s.total}><b>{getTotal().totalPrice} USD</b> </div>
+          <Button type="primary" className={s.button} >confirm order</Button>
         </div>
       </div>
-    </div>
 
+    </div>
   );
 }
 

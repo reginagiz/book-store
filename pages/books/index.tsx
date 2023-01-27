@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Card } from 'antd';
 import s from '../../components/style/allBooks.module.css'
-import { useQuery} from "@apollo/client";
-import {BOOKS_QUERY} from '../api/query/getAllBooks'
-
+import { useQuery } from "@apollo/client";
+import { BOOKS_QUERY } from '../api/query/getAllBooks'
+import { Product } from "../api/types/Types";
 
 export default function Books() {
     const { Meta } = Card;
@@ -17,7 +17,7 @@ export default function Books() {
 
     return (
         <div className={s.listBooks}>
-            {data?.books?.map((item: any)  => (
+            {data?.books?.map((item: Product) => (
                 <Link href={`/books/${item.id}`} key={item.id}>
                     <Card
                         hoverable

@@ -7,6 +7,7 @@ import { Button } from 'antd';
 import { Badge } from 'antd';
 import { ITEMS_QUERY } from '../pages/api/query/getOrderItems';
 import { useQuery } from "@apollo/client";
+import { CartItem } from '@/pages/api/types/Types';
 
 const Header = () => {
   const [countItems, setCountItems] = useState<number>(0);
@@ -14,7 +15,7 @@ const Header = () => {
   const { data, loading, error } = useQuery(ITEMS_QUERY);
 
   useEffect(() => {
-    setCountItems(data.orderItems.reduce((acc: number, curent: any) => {
+    setCountItems(data?.orderItems.reduce((acc: number, curent: CartItem) => {
       return acc + curent.quantity;
     }, 0))
   }, [data])

@@ -11,13 +11,14 @@ import { ITEMS_COUNT_QUERY } from '../api/query/getOrderItemsCount'
 import { ITEMS_QUERY } from "../api/query/getOrderItems";
 import { openNotification } from '../../components/Notification'
 import { useState, useEffect } from "react";
+import { CartItem } from "../api/types/Types";
 
 
 export default function Book() {
     const router = useRouter()
     const id = router.query.id as string;
 
-    const [cartItem, setCartItem] = useState<any>();
+    const [cartItem, setCartItem] = useState<CartItem>();
 
     const { data: bookData, loading, error } = useQuery(BOOK_QUERY, { variables: { id } });
     const { data: cart } = useQuery(ITEMS_COUNT_QUERY);
@@ -31,7 +32,7 @@ export default function Book() {
 
     useEffect(() => {
         if (cart?.orderItems) {
-            setCartItem(cart.orderItems.find((e: any) => e.product.id === id));
+            setCartItem(cart.orderItems.find((e: CartItem) => e.product.id === id));
         }
     }, [cart])
 
