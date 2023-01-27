@@ -52,8 +52,6 @@ export default function Cart() {
     })
     return { totalPrice }
   }
-  console.log(data.orderItems.map((orderItem: any) => { orderItem.product.id }))
-  console.log(data.orderItems)
 
   const columns: ColumnsType<CartItem> = [
     {
@@ -93,8 +91,10 @@ export default function Cart() {
           <li>
             &nbsp;{quantity}&nbsp;
           </li>
-          <Button onClick={() =>
-            updateOrderItem({ variables: { id: orderItem.id, input: quantity - 1 } })}>-
+          <Button onClick={() => {
+            quantity === 1 ? deleteOrderItem({ variables: { id: orderItem.id } })
+              : updateOrderItem({ variables: { id: orderItem.id, input: quantity - 1 } })
+          }}>-
           </Button>
         </div >
       )
@@ -108,8 +108,8 @@ export default function Cart() {
     {
       title: 'Remove',
       key: 'action',
-      render: (_, productItem) => (
-        <Button onClick={() => deleteOrderItem({ variables: { id: productItem.id } })}>X</Button >
+      render: (_, orderItem) => (
+        <Button onClick={() => deleteOrderItem({ variables: { id: orderItem.id } })}>X</Button >
       ),
     }
   ];

@@ -1,15 +1,23 @@
 import logo from '../logo.png'
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import s from './style/Header.module.css'
 import Link from "next/link";
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { Badge } from 'antd';
-import { ITEMS_COUNT_QUERY } from '../pages/api/query/getOrderItemsCount';
+import { ITEMS_QUERY } from '../pages/api/query/getOrderItems';
 import { useQuery } from "@apollo/client";
 
 const Header = () => {
-  const { data, loading, error } = useQuery(ITEMS_COUNT_QUERY);
+  const [countItems, setCountItems] = useState<number>(0);
+
+  const { data, loading, error } = useQuery(ITEMS_QUERY);
+
+  useEffect(() => {
+    setCountItems(data.orderItems.reduce((acc: number, curent: any) => {
+      return acc + curent.quantity;
+    }, 0))
+  }, [data])
 
   if (loading) {
     return <p>loading...</p>;
@@ -29,7 +37,7 @@ const Header = () => {
         <Link href="/books">All books</Link>
       </div>
       <div className={s.button} >
-        <Badge count={data.orderItemsCount} showZero offset={[6, 11]}>
+        <Badge count={countItems} showZero offset={[6, 11]}>
           <Link href="/cart">
             <Button type="primary" shape="circle" icon={<ShoppingCartOutlined />} size='large' />
           </Link>

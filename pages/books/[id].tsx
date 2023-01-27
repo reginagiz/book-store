@@ -16,17 +16,15 @@ import { useState, useEffect } from "react";
 export default function Book() {
     const router = useRouter()
     const id = router.query.id as string;
+
     const [cartItem, setCartItem] = useState<any>();
 
     const { data: bookData, loading, error } = useQuery(BOOK_QUERY, { variables: { id } });
-
-
     const { data: cart } = useQuery(ITEMS_COUNT_QUERY);
 
     const [createOrderItem] = useMutation(CREATE_ORDER_ITEM, {
         refetchQueries: [{ query: ITEMS_QUERY }, { query: ITEMS_COUNT_QUERY }]
     })
-
     const [updateOrderItem] = useMutation(UPDATE_ORDER_ITEM, {
         refetchQueries: [{ query: ITEMS_QUERY }, { query: ITEMS_COUNT_QUERY }]
     })
