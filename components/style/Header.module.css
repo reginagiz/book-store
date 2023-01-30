@@ -1,30 +1,48 @@
-.header{
+.header {
     display: flex;
     flex-direction: row;
-    justify-content:space-between;
     height: 100px;
+    align-items: center;
+    width: 100%;
 }
-.logobox img{
+
+.logobox img {
     display: flex;
-    margin:0;
+    justify-content: flex-start;
+    margin: 0;
     width: 200px;
     height: 180px;
-    margin-left:50px;
+    margin-left: 70px;
+    margin-top: 30px;
 }
-.button{
+
+.buttons {
     display: flex;
-    margin-right:90px;
+    justify-content: flex-end;
     align-items: flex-end;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 120px;
 }
-.books{
+
+.user_button {
+    margin-right: 30px;
+}
+
+.books {
     display: flex;
     text-transform: uppercase;
     font-size: large;
     align-items: flex-end;
+    justify-content: center;
+    width: 100%;
     background-color: inherit;
     border: none;
-    margin-right:110px;
+    margin-left: 180px;
+    margin-top: 60px;
 }
-.books:hover{
+
+.books:hover {
     transform: scale(1.2);
 }

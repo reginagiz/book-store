@@ -2,7 +2,7 @@ import logo from '../logo.png'
 import React, { useEffect, useState } from 'react';
 import s from './style/Header.module.css'
 import Link from "next/link";
-import { ShoppingCartOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { Badge } from 'antd';
 import { ITEMS_QUERY } from '../pages/api/query/getOrderItems';
@@ -37,13 +37,21 @@ const Header = () => {
       <div className={s.books}>
         <Link href="/books">All books</Link>
       </div>
-      <div className={s.button} >
-        <Badge count={countItems} showZero offset={[6, 11]}>
-          <Link href="/cart">
-            <Button type="primary" shape="circle" icon={<ShoppingCartOutlined />} size='large' />
+      <div className={s.buttons} >
+        <div className={s.user_button}>
+          <Link href="/auth">
+            <Button type="primary" shape="circle" icon={<UserOutlined />} size='large' />
           </Link>
-        </Badge>
+        </div>
+        <div className={s.cart_button}>
+          <Badge count={countItems} showZero offset={[6, 11]}>
+            <Link href="/cart">
+              <Button type="primary" shape="circle" icon={<ShoppingCartOutlined />} size='large' />
+            </Link>
+          </Badge>
+        </div>
       </div>
+
     </div>
   )
 }
