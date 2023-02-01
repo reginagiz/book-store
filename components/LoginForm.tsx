@@ -1,12 +1,17 @@
 import React from 'react';
-import { LockOutlined, UserOutlined, EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import { LockOutlined, UserOutlined, EyeInvisibleOutlined, EyeTwoTone, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import s from './style/Auth.module.css'
-
+import { useMutation } from "@apollo/client";
+import { AUTH_USER } from '../pages/api/mutation/authenticateUser'
 
 const LoginForm: React.FC = () => {
+
+    const [authenticateUser] = useMutation(AUTH_USER)
+
     const onFinish = (values: any) => {
         console.log('Received values of form: ', values);
+        authenticateUser({ variables: { email: values.email, password: values.password } })
     };
 
     return (
@@ -17,10 +22,19 @@ const LoginForm: React.FC = () => {
             onFinish={onFinish}
         >
             <Form.Item
-                name="username"
-                rules={[{ required: true, message: 'Please input your Username!' }]}
+                name="email"
+                rules={[
+                    {
+                        type: 'email',
+                        message: 'The input is not valid E-mail!',
+                    },
+                    {
+                        required: true,
+                        message: 'Please input your E-mail!',
+                    },
+                ]}
             >
-                <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+                <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" />
             </Form.Item>
             <Form.Item
                 name="password"

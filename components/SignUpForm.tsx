@@ -5,6 +5,7 @@ import s from './style/Auth.module.css'
 
 
 const SignUpForm: React.FC = () => {
+
     const onFinish = (values: any) => {
         console.log('Received values of form: ', values);
     };
