@@ -1,5 +1,5 @@
 import logo from '../logo.png'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import s from './style/Header.module.css'
 import Link from "next/link";
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
@@ -8,9 +8,13 @@ import { Badge } from 'antd';
 import { ITEMS_QUERY } from '../pages/api/query/getOrderItems';
 import { useQuery } from "@apollo/client";
 import { CartItem } from '@/pages/api/types/Types';
+import UserContext from '../user/userContext';
+
 
 const Header = () => {
   const [countItems, setCountItems] = useState<number>(0);
+
+  const user = useContext(UserContext)
 
   const { data, loading, error } = useQuery(ITEMS_QUERY);
 
@@ -39,6 +43,7 @@ const Header = () => {
       </div>
       <div className={s.buttons} >
         <div className={s.user_button}>
+          <div>{user?.name}</div>
           <Link href="/auth">
             <Button type="primary" shape="circle" icon={<UserOutlined />} size='large' />
           </Link>
@@ -49,6 +54,7 @@ const Header = () => {
               <Button type="primary" shape="circle" icon={<ShoppingCartOutlined />} size='large' />
             </Link>
           </Badge>
+
         </div>
       </div>
 

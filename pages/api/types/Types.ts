@@ -18,3 +18,8 @@ export type Author = {
 export type Avatar = {
     url: string;
 };
+export type User = {
+    name: string;
+    email: string;
+    id: string;
+};

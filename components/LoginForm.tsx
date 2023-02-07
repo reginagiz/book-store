@@ -1,16 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { LockOutlined, UserOutlined, EyeInvisibleOutlined, EyeTwoTone, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import s from './style/Auth.module.css'
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { AUTH_USER } from '../pages/api/mutation/authenticateUser'
+
 
 const LoginForm: React.FC = () => {
 
-    const [authenticateUser] = useMutation(AUTH_USER)
+    const [authenticateUser, { data, loading, error }] = useMutation(AUTH_USER)
+
+    useEffect(() => {
+        if (data) {
+            localStorage.setItem('currentUserId', JSON.stringify(data?.authenticateUserWithPassword.item.id))
+        }
+    }, [data])
 
     const onFinish = (values: any) => {
-        console.log('Received values of form: ', values);
         authenticateUser({ variables: { email: values.email, password: values.password } })
     };
 
