@@ -1,20 +1,21 @@
 import React, { useEffect } from 'react';
-import { LockOutlined, UserOutlined, EyeInvisibleOutlined, EyeTwoTone, MailOutlined } from '@ant-design/icons';
+import { LockOutlined, EyeInvisibleOutlined, EyeTwoTone, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import s from './style/Auth.module.css'
 import { useMutation, useQuery } from "@apollo/client";
 import { AUTH_USER } from '../pages/api/mutation/authenticateUser'
-
+import { useRouter } from 'next/router'
 
 const LoginForm: React.FC = () => {
-
-    const [authenticateUser, { data, loading, error }] = useMutation(AUTH_USER)
+    const router = useRouter();
+    const [authenticateUser, { data, loading, error }] = useMutation(AUTH_USER);
 
     useEffect(() => {
         if (data) {
-            localStorage.setItem('currentUserId', JSON.stringify(data?.authenticateUserWithPassword.item.id))
+            localStorage.setItem('currentUserId', JSON.stringify(data?.authenticateUserWithPassword.item.id));
+            router.push("/profile");
         }
-    }, [data])
+    }, [data]);
 
     const onFinish = (values: any) => {
         authenticateUser({ variables: { email: values.email, password: values.password } })

@@ -2,21 +2,22 @@ import logo from '../logo.png'
 import React, { useEffect, useState, useContext } from 'react';
 import s from './style/Header.module.css'
 import Link from "next/link";
-import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined, UserOutlined, UserDeleteOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { Badge } from 'antd';
 import { ITEMS_QUERY } from '../pages/api/query/getOrderItems';
 import { useQuery } from "@apollo/client";
 import { CartItem } from '@/pages/api/types/Types';
-import UserContext from '../user/userContext';
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 
 const Header = () => {
   const [countItems, setCountItems] = useState<number>(0);
 
-  const user = useContext(UserContext)
-
   const { data, loading, error } = useQuery(ITEMS_QUERY);
+
+  const { user, isLoading } = useUser();
+  console.log(user)
 
   useEffect(() => {
     setCountItems(data?.orderItems.reduce((acc: number, curent: CartItem) => {
@@ -43,10 +44,15 @@ const Header = () => {
       </div>
       <div className={s.buttons} >
         <div className={s.user_button}>
-          <div>{user?.name}</div>
-          <Link href="/auth">
-            <Button type="primary" shape="circle" icon={<UserOutlined />} size='large' />
-          </Link>
+          {user ?
+            <Link href="/profile">
+              <div>{user.name}</div>
+              <Button type="primary" shape="circle" icon={<UserOutlined />} size='large' />
+            </Link>
+            :
+            <a href="/api/auth/login">
+              <Button type="primary" shape="circle" icon={<UserOutlined />} size='large' />
+            </a>}
         </div>
         <div className={s.cart_button}>
           <Badge count={countItems} showZero offset={[6, 11]}>

@@ -12,6 +12,7 @@ import { ITEMS_QUERY } from "../api/query/getOrderItems";
 import { openNotification } from '../../components/Notification'
 import { useState, useEffect } from "react";
 import { CartItem } from "../api/types/Types";
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 
 export default function Book() {
@@ -30,6 +31,8 @@ export default function Book() {
         refetchQueries: [{ query: ITEMS_QUERY }, { query: ITEMS_COUNT_QUERY }]
     })
 
+    const { user, isLoading } = useUser();
+
     useEffect(() => {
         if (cart?.orderItems) {
             setCartItem(cart.orderItems.find((e: CartItem) => e.product.id === id));
@@ -41,7 +44,7 @@ export default function Book() {
             updateOrderItem({ variables: { id: cartItem.id, input: cartItem.quantity + 1 } });
             openNotification(bookData)
         } else {
-            createOrderItem({ variables: { id } })
+            createOrderItem({ variables: { id: id, email: user?.email, name: user?.name } })
             openNotification(bookData)
         }
     }
@@ -66,8 +69,13 @@ export default function Book() {
                 <div><b>Publish Date:</b> {book.year}</div>
                 <div><b>Genre:</b> {book.genre}</div>
                 <div className={s.description}><b>Description:</b> {book.description}</div>
-
-                <Button type="primary" className={s.button} onClick={addItemToCart}>Add to cart</Button>
+                {user ?
+                    <Button type="primary" className={s.button} onClick={addItemToCart}>Add to cart</Button>
+                    :
+                    <a href="/api/auth/login">
+                        <Button type="primary" className={s.button}>Add to cart</Button>
+                    </a>
+                }
                 <div className={s.shipping_return}>
                     <div className={s.shipping}>
                         <ShoppingOutlined style={{ fontSize: '50px' }} />

@@ -10,7 +10,7 @@ const tabItemClick = (key: String) => {
     console.log('tab click', key);
 };
 
-const App: React.FC = () => (
+const Auth: React.FC = () => (
     <div className={s.auth}>
         <div className={s.title}>Hello, Log in or create an account on Book store, don't miss the discounts!</div>
         <div className={s.tabs}>
@@ -23,4 +23,4 @@ const App: React.FC = () => (
 
 );
 
-export default App;
+export default Auth;

@@ -1,35 +1,21 @@
-import Link from "next/link";
-import { Card } from 'antd';
-import s from '../../components/style/allBooks.module.css'
-import { useQuery } from "@apollo/client";
-import { BOOKS_QUERY } from '../api/query/getAllBooks'
-import { Product } from "../api/types/Types";
+import React from 'react';
+import { useUser } from '@auth0/nextjs-auth0/client';
 
-export default function Profile() {
-    const { Meta } = Card;
-    const { data, loading, error } = useQuery(BOOKS_QUERY);
-    if (loading) {
-        return <p>loading...</p>;
-    }
-    if (error) {
-        return <p>Ruh roh! {error.message}</p>;
-    }
+export default () => {
+    const { user, error, isLoading } = useUser();
 
-    return (
-        <div className={s.listBooks}>
-            {data?.books?.map((item: Product) => (
-                <Link href={`/books/${item.id}`} key={item.id}>
-                    <Card
-                        hoverable
-                        style={{ width: 280, margin: 20 }}
-                        cover={<img src={item.avatar.url} alt="example" style={{ width: 280, height: 370 }} />}
-                    >
-                        <div key={item.id}>
-                            <Meta title={item.title} description={item.author.name} />
-                        </div>
-                    </Card>
-                </Link>
-            ))}
-        </div>
-    );
-}
+    if (isLoading) return <div>Loading...</div>;
+
+    if (error) return <div>{error.message}</div>;
+
+    if (user) {
+        return (
+            <div>
+                <h2>{user.name}</h2>
+                <p>{user.email}</p>
+                <a href="/api/auth/logout">Logout</a>
+            </div>
+        );
+    }
+    return <a href="/api/auth/login">Login</a>;
+};
