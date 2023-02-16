@@ -17,7 +17,6 @@ const Header = () => {
   const { data, loading, error } = useQuery(ITEMS_QUERY);
 
   const { user, isLoading } = useUser();
-  console.log(user)
 
   useEffect(() => {
     setCountItems(data?.orderItems.reduce((acc: number, curent: CartItem) => {

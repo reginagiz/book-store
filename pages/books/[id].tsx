@@ -7,11 +7,13 @@ import { BOOK_QUERY } from '../api/query/getBook';
 import { useRouter } from 'next/router'
 import { UPDATE_ORDER_ITEM } from '../api/mutation/updateOrdrItem'
 import { CREATE_ORDER_ITEM } from '../api/mutation/createOrderItem'
+import { CREATE_CUSTOMER } from '../api/mutation/createCustomer'
 import { ITEMS_COUNT_QUERY } from '../api/query/getOrderItemsCount'
 import { ITEMS_QUERY } from "../api/query/getOrderItems";
+import { CUSTOMER } from "../api/query/getCustomer";
 import { openNotification } from '../../components/Notification'
 import { useState, useEffect } from "react";
-import { CartItem } from "../api/types/Types";
+import { CartItem, Customer } from "../api/types/Types";
 import { useUser } from '@auth0/nextjs-auth0/client';
 
 
@@ -24,14 +26,19 @@ export default function Book() {
     const { data: bookData, loading, error } = useQuery(BOOK_QUERY, { variables: { id } });
     const { data: cart } = useQuery(ITEMS_COUNT_QUERY);
 
-    const [createOrderItem] = useMutation(CREATE_ORDER_ITEM, {
-        refetchQueries: [{ query: ITEMS_QUERY }, { query: ITEMS_COUNT_QUERY }]
-    })
-    const [updateOrderItem] = useMutation(UPDATE_ORDER_ITEM, {
-        refetchQueries: [{ query: ITEMS_QUERY }, { query: ITEMS_COUNT_QUERY }]
+    const { user, isLoading } = useUser();
+    const { data: customer } = useQuery(CUSTOMER, { variables: { email: user?.email } });
+
+    const [createCustomer] = useMutation(CREATE_CUSTOMER, {
+        refetchQueries: [{ query: CUSTOMER }]
     })
 
-    const { user, isLoading } = useUser();
+    const [createOrderItem] = useMutation(CREATE_ORDER_ITEM, {
+        refetchQueries: [{ query: ITEMS_COUNT_QUERY }, { query: CUSTOMER }]
+    })
+    const [updateOrderItem] = useMutation(UPDATE_ORDER_ITEM, {
+        refetchQueries: [{ query: ITEMS_COUNT_QUERY }, { query: CUSTOMER }]
+    })
 
     useEffect(() => {
         if (cart?.orderItems) {
@@ -43,8 +50,14 @@ export default function Book() {
         if (cartItem) {
             updateOrderItem({ variables: { id: cartItem.id, input: cartItem.quantity + 1 } });
             openNotification(bookData)
-        } else {
-            createOrderItem({ variables: { id: id, email: user?.email, name: user?.name } })
+        }
+        else if (customer && !cartItem) {
+            createOrderItem({ variables: { id: id, email: user?.email } })
+            openNotification(bookData)
+        }
+        else if (!customer && !cartItem) {
+            createCustomer({ variables: { email: user?.email, name: user?.name } })
+            createOrderItem({ variables: { id: id, email: user?.email } })
             openNotification(bookData)
         }
     }

@@ -1,33 +1,35 @@
 import Link from "next/link";
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Table, Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useMutation, useQuery } from "@apollo/client";
-import { ITEMS_QUERY } from "../api/query/getOrderItems";
+import { CUSTOMER } from "../api/query/getCustomer";
 import { DELETE_ORDER_ITEM } from "../api/mutation/deleteOrderItem";
 import { ITEMS_COUNT_QUERY } from '../api/query/getOrderItemsCount'
 import { UPDATE_ORDER_ITEM } from '../api/mutation/updateOrdrItem'
 import s from '../../components/style/Cart.module.css'
 import { CartItem } from "../api/types/Types";
+import { useUser } from '@auth0/nextjs-auth0/client';
+
 
 export default function Cart() {
+  const { user, isLoading } = useUser();
+  const { data, loading, error } = useQuery(CUSTOMER, { variables: { email: user?.email } });
+
   const [deleteOrderItem] = useMutation(DELETE_ORDER_ITEM, {
-    refetchQueries: [{ query: ITEMS_QUERY }, { query: ITEMS_COUNT_QUERY }]
+    refetchQueries: [{ query: CUSTOMER }, { query: ITEMS_COUNT_QUERY }]
   });
   const [updateOrderItem] = useMutation(UPDATE_ORDER_ITEM, {
-    refetchQueries: [{ query: ITEMS_QUERY }, { query: ITEMS_COUNT_QUERY }]
+    refetchQueries: [{ query: CUSTOMER }, { query: ITEMS_COUNT_QUERY }]
   })
-
-  const { data, loading, error } = useQuery(ITEMS_QUERY);
 
   const getTotal = () => {
     let totalPrice = 0
-    data.orderItems?.forEach((orderItem: CartItem) => {
+    data?.customer.orderitems.forEach((orderItem: CartItem) => {
       totalPrice += orderItem.product.price * orderItem.quantity
     })
     return { totalPrice }
   }
-
   const columns: ColumnsType<CartItem> = [
     {
       title: '',
@@ -45,7 +47,7 @@ export default function Cart() {
     },
     {
       title: 'Title',
-      dataIndex: 'product',
+      dataIndex: ['product'],
       key: 'product',
       render: (product) => <Link href={`/books/${product.id}`} >{product.title}</Link>,
     },
@@ -97,23 +99,27 @@ export default function Cart() {
   }
 
   return (
-    <div className={s.cart}>
-      <div className={s.title}>My shopping cart</div>
-      <div className={s.table_total}>
-        <div className={s.table_container}>
-          <Table columns={columns} dataSource={data.orderItems} pagination={false} size='middle' />
-        </div>
-        <div className={s.delivery_total}>
-          <div className={s.delivery_total_title}>Order Summary</div>
-          <div className={s.delivery}>Delivery Total : <b>0 USD</b></div>
-          <div className={s.product_total}>Product Total : <b>{getTotal().totalPrice} USD</b></div>
-          <div className={s.line}></div>
-          <div className={s.total}><b>{getTotal().totalPrice} USD</b> </div>
-          <Button type="primary" className={s.button} >confirm order</Button>
+    <> {data ?
+      <div className={s.cart}>
+        <div className={s.title}>My shopping cart</div>
+        <div className={s.table_total}>
+          <div className={s.table_container}>
+            <Table columns={columns} dataSource={data?.customer.orderitems} pagination={false} size='middle' />
+          </div>
+          <div className={s.delivery_total}>
+            <div className={s.delivery_total_title}>Order Summary</div>
+            <div className={s.delivery}>Delivery Total : <b>0 USD</b></div>
+            <div className={s.product_total}>Product Total : <b>{getTotal().totalPrice} USD</b></div>
+            <div className={s.line}></div>
+            <div className={s.total}><b>{getTotal().totalPrice} USD</b> </div>
+            <Button type="primary" className={s.button} >confirm order</Button>
+          </div>
         </div>
       </div>
+      :
+      loading}
+    </>
 
-    </div>
   );
 }
 
