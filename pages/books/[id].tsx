@@ -30,14 +30,17 @@ export default function Book() {
     const { data: customer } = useQuery(CUSTOMER, { variables: { email: user?.email } });
 
     const [createCustomer] = useMutation(CREATE_CUSTOMER, {
-        refetchQueries: [{ query: CUSTOMER }]
+        refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } }],
+        awaitRefetchQueries: true
     })
 
     const [createOrderItem] = useMutation(CREATE_ORDER_ITEM, {
-        refetchQueries: [{ query: ITEMS_COUNT_QUERY }, { query: CUSTOMER }]
+        refetchQueries: [{ query: ITEMS_COUNT_QUERY }, { query: CUSTOMER, variables: { email: user?.email } }],
+        awaitRefetchQueries: true
     })
     const [updateOrderItem] = useMutation(UPDATE_ORDER_ITEM, {
-        refetchQueries: [{ query: ITEMS_COUNT_QUERY }, { query: CUSTOMER }]
+        refetchQueries: [{ query: ITEMS_COUNT_QUERY }, { query: CUSTOMER, variables: { email: user?.email } }],
+        awaitRefetchQueries: true
     })
 
     useEffect(() => {

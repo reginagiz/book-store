@@ -17,10 +17,10 @@ export default function Cart() {
   const { data, loading, error } = useQuery(CUSTOMER, { variables: { email: user?.email } });
 
   const [deleteOrderItem] = useMutation(DELETE_ORDER_ITEM, {
-    refetchQueries: [{ query: CUSTOMER }, { query: ITEMS_COUNT_QUERY }]
+    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } }, { query: ITEMS_COUNT_QUERY }]
   });
   const [updateOrderItem] = useMutation(UPDATE_ORDER_ITEM, {
-    refetchQueries: [{ query: CUSTOMER }, { query: ITEMS_COUNT_QUERY }]
+    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } }, { query: ITEMS_COUNT_QUERY }]
   })
 
   const getTotal = () => {

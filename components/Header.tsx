@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ShoppingCartOutlined, UserOutlined, UserDeleteOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { Badge } from 'antd';
-import { ITEMS_QUERY } from '../pages/api/query/getOrderItems';
+import { CUSTOMER } from '../pages/api/query/getCustomer';
 import { useQuery } from "@apollo/client";
 import { CartItem } from '@/pages/api/types/Types';
 import { useUser } from '@auth0/nextjs-auth0/client';
@@ -14,14 +14,14 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 const Header = () => {
   const [countItems, setCountItems] = useState<number>(0);
 
-  const { data, loading, error } = useQuery(ITEMS_QUERY);
-
   const { user, isLoading } = useUser();
+  const { data, loading, error } = useQuery(CUSTOMER, { variables: { email: user?.email } });
 
   useEffect(() => {
-    setCountItems(data?.orderItems.reduce((acc: number, curent: CartItem) => {
-      return acc + curent.quantity;
-    }, 0))
+    if (data)
+      setCountItems(data?.customer.orderitems.reduce((acc: number, curent: CartItem) => {
+        return acc + curent.quantity;
+      }, 0))
   }, [data])
 
   if (loading) {
