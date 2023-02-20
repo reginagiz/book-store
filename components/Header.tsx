@@ -24,46 +24,61 @@ const Header = () => {
       }, 0))
   }, [data])
 
-  if (loading) {
-    return <p>loading...</p>;
-  }
-  if (error) {
-    return <p>Ruh roh! {error.message}</p>;
-  }
-
   return (
-    <div className={s.header}>
-      <div className={s.logobox}>
-        <Link href="/">
-          <img src={logo.src} alt="logo" className={s.logo}></img>
-        </Link>
-      </div>
-      <div className={s.books}>
-        <Link href="/books">All books</Link>
-      </div>
-      <div className={s.buttons} >
-        <div className={s.user_button}>
-          {user ?
-            <Link href="/profile">
-              <div>{user.name}</div>
-              <Button type="primary" shape="circle" icon={<UserOutlined />} size='large' />
-            </Link>
-            :
+    <>{!user ?
+      <div className={s.header}>
+        <div className={s.logobox}>
+          <Link href="/">
+            <img src={logo.src} alt="logo" className={s.logo}></img>
+          </Link>
+        </div>
+        <div className={s.books}>
+          <Link href="/books">All books</Link>
+        </div>
+        <div className={s.buttons} >
+          <div className={s.user_button}>
             <a href="/api/auth/login">
               <Button type="primary" shape="circle" icon={<UserOutlined />} size='large' />
-            </a>}
-        </div>
-        <div className={s.cart_button}>
-          <Badge count={countItems} showZero offset={[6, 11]}>
-            <Link href="/cart">
-              <Button type="primary" shape="circle" icon={<ShoppingCartOutlined />} size='large' />
-            </Link>
-          </Badge>
-
+            </a>
+          </div>
+          <div className={s.cart_button}>
+            <Badge count={countItems} showZero offset={[6, 11]}>
+              <Link href="/cart">
+                <Button type="primary" shape="circle" icon={<ShoppingCartOutlined />} size='large' />
+              </Link>
+            </Badge>
+          </div>
         </div>
       </div>
+      :
+      <div className={s.header}>
+        <div className={s.logobox}>
+          <Link href="/">
+            <img src={logo.src} alt="logo" className={s.logo}></img>
+          </Link>
+        </div>
+        <div className={s.books}>
+          <Link href="/books">All books</Link>
+        </div>
+        <div className={s.buttons} >
+          <div className={s.user_button}>
+            <Link href="/profile">
+              <Button type="primary" shape="circle" icon={<UserOutlined />} size='large' />
+              <div className={s.user_name}>{user.email}</div>
+            </Link>
+          </div>
+          <div className={s.cart_button}>
+            <Badge count={countItems} showZero offset={[6, 11]}>
+              <Link href="/cart">
+                <Button type="primary" shape="circle" icon={<ShoppingCartOutlined />} size='large' />
+              </Link>
+            </Badge>
+          </div>
+        </div>
+      </div>
+    }
+    </>
 
-    </div>
   )
 }
 
