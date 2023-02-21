@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Modal } from 'antd';
 import { GET_ORDER } from "../pages/api/query/getOrder";
 import { useQuery } from '@apollo/client';
+import s from '../components/style/orderModal.module.css'
 
 
 interface MyProps {
     id: String,
 }
-const Order: React.FC<MyProps> = (props: MyProps) => {
+const Order = (orderId: MyProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const { data, loading, error } = useQuery(GET_ORDER, { variables: { id: props } });
-    console.log(props)
+    const id = orderId.id
+    const { data, loading, error } = useQuery(GET_ORDER, { variables: { id: id } });
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -24,18 +24,49 @@ const Order: React.FC<MyProps> = (props: MyProps) => {
     };
 
     return (
-        <>
-            <Button type="primary" onClick={showModal}>
-                confirm order
-            </Button>
-            <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                {loading ?
-                    loading
-                    :
-                    <p>{data?.order}</p>
-                }
-
-            </Modal>
+        <>{!data ?
+            <div className={s.confirm}>
+                <Button type="primary" onClick={showModal} className={s.confirm}>
+                    <p >confirm order</p>
+                </Button>
+            </div>
+            :
+            <div >
+                <div className={s.confirm}>
+                    <Button type="primary" onClick={showModal} className={s.confirm}>
+                        <p >confirm order</p>
+                    </Button>
+                </div>
+                <Modal title="Confirm your order" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                    <div >
+                        {data.order.customer.map((e: any) => {
+                            return (
+                                <div className={s.modal}>
+                                    <div className={s.user_info}>
+                                        <div>{e.name}</div>
+                                        <div>{e.email}</div>
+                                    </div>
+                                    <div>{e.orderitems?.map((e: any) => {
+                                        return (
+                                            <div className={s.books_info}>
+                                                <p>Book's information:</p>
+                                                <div className={s.book}>
+                                                    <div>Title: {e.product.title}</div>
+                                                    <div>Author: {e.product.author.name}</div>
+                                                    <div>Price: {e.product.price * e.quantity} USD</div>
+                                                    <div>Quantity: {e.quantity}</div>
+                                                </div>
+                                            </div>
+                                        )
+                                    })}</div>
+                                </div>
+                            )
+                        })}
+                    </div>
+                    <p className={s.total_price}>Total Price: <b>{data.order.totalprice} USD</b></p>
+                </Modal>
+            </div>
+        }
         </>
     );
 };

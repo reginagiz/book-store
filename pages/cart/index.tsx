@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useMutation, useQuery } from "@apollo/client";
@@ -16,6 +16,7 @@ import Order from "@/components/orderModal";
 
 
 export default function Cart() {
+  const [price, setPrice] = useState(0)
   const { user, isLoading } = useUser();
   const { data, loading, error } = useQuery(CUSTOMER, { variables: { email: user?.email } });
 
@@ -26,17 +27,19 @@ export default function Cart() {
     refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } }, { query: ITEMS_COUNT_QUERY }]
   })
 
-  const getTotal = () => {
-    let totalPrice = 0
-    data?.customer.orderitems.forEach((orderItem: CartItem) => {
-      totalPrice += orderItem.product.price * orderItem.quantity
-    })
-    return totalPrice
-  }
   const [createOrder, { data: order }] = useMutation(CREATE_ORDER, {
     refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } }],
     awaitRefetchQueries: true
   })
+  const OrderId = order?.createOrder.id
+
+  useEffect(() => {
+    let totalPrice = 0
+    data?.customer.orderitems.forEach((orderItem: CartItem) => {
+      totalPrice += orderItem.product.price * orderItem.quantity
+      setPrice(totalPrice)
+    })
+  }, [data, price]);
 
   const columns: ColumnsType<CartItem> = [
     {
@@ -117,11 +120,11 @@ export default function Cart() {
           <div className={s.delivery_total}>
             <div className={s.delivery_total_title}>Order Summary</div>
             <div className={s.delivery}>Delivery Total : <b>0 USD</b></div>
-            <div className={s.product_total}>Product Total : <b>{getTotal()} USD</b></div>
+            <div className={s.product_total}>Product Total : <b>{price} USD</b></div>
             <div className={s.line}></div>
-            <div className={s.total}><b>{getTotal()} USD</b> </div>
-            <a onClick={() => createOrder({ variables: { email: user?.email, totalprice: getTotal() } })}>
-              <Order id={order?.createOrder.id} />
+            <div className={s.total}><b>{price} USD</b> </div>
+            <a onClick={() => createOrder({ variables: { email: user?.email, input: price } })}>
+              <Order id={OrderId} />
             </a>
           </div>
         </div>

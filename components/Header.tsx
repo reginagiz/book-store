@@ -36,16 +36,16 @@ const Header = () => {
           <Link href="/books">All books</Link>
         </div>
         <div className={s.buttons} >
-          <div className={s.user_button}>
+          <div className={s.user_button_auth}>
             <a href="/api/auth/login">
               <Button type="primary" shape="circle" icon={<UserOutlined />} size='large' />
             </a>
           </div>
           <div className={s.cart_button}>
             <Badge count={countItems} showZero offset={[6, 11]}>
-              <Link href="/cart">
+              <a href="/api/auth/login">
                 <Button type="primary" shape="circle" icon={<ShoppingCartOutlined />} size='large' />
-              </Link>
+              </a>
             </Badge>
           </div>
         </div>

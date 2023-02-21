@@ -10,9 +10,9 @@ query GET_ORDER($id: ID!) {
         name
         email
         orderitems {
-          price
           quantity
           product {
+            price
             title
             author {
               name

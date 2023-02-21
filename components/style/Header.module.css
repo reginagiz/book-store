@@ -33,6 +33,12 @@
     margin-top: 30px;
 }
 
+.user_button_auth {
+    margin-right: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
 .user_name {
     font-size: 12px;
     margin-top: 10px;
