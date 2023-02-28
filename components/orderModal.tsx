@@ -39,29 +39,25 @@ const Order = (orderId: MyProps) => {
                 </div>
                 <Modal title="Confirm your order" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                     <div >
-                        {data.order.customer.map((e: any) => {
-                            return (
-                                <div className={s.modal}>
-                                    <div className={s.user_info}>
-                                        <div>{e.name}</div>
-                                        <div>{e.email}</div>
+                        <div className={s.modal}>
+                            <div className={s.user_info}>
+                                <div>{data?.order.customer.name}</div>
+                                <div>{data?.order.customer.email}</div>
+                            </div>
+                            <div>{data.order.cart?.map((e: any) => {
+                                return (
+                                    <div className={s.books_info}>
+                                        <p>Book's information:</p>
+                                        <div className={s.book}>
+                                            <div>Title: {e.product.title}</div>
+                                            <div>Author: {e.product.author.name}</div>
+                                            <div>Price: {e.product.price * e.quantity} USD</div>
+                                            <div>Quantity: {e.quantity}</div>
+                                        </div>
                                     </div>
-                                    <div>{e.orderitems?.map((e: any) => {
-                                        return (
-                                            <div className={s.books_info}>
-                                                <p>Book's information:</p>
-                                                <div className={s.book}>
-                                                    <div>Title: {e.product.title}</div>
-                                                    <div>Author: {e.product.author.name}</div>
-                                                    <div>Price: {e.product.price * e.quantity} USD</div>
-                                                    <div>Quantity: {e.quantity}</div>
-                                                </div>
-                                            </div>
-                                        )
-                                    })}</div>
-                                </div>
-                            )
-                        })}
+                                )
+                            })}</div>
+                        </div>
                     </div>
                     <p className={s.total_price}>Total Price: <b>{data.order.totalprice} USD</b></p>
                 </Modal>

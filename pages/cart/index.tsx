@@ -16,10 +16,12 @@ import Order from "@/components/orderModal";
 
 
 export default function Cart() {
-  const [price, setPrice] = useState(0)
+  const [price, setPrice] = useState(0);
+  const [orderItemsIds, setorderItemsIds] = useState<any[]>([]);
   const { user, isLoading } = useUser();
   const { data, loading, error } = useQuery(CUSTOMER, { variables: { email: user?.email } });
 
+  console.log(data?.customer)
   const [deleteOrderItem] = useMutation(DELETE_ORDER_ITEM, {
     refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } }, { query: ITEMS_COUNT_QUERY }]
   });
@@ -40,6 +42,14 @@ export default function Cart() {
       setPrice(totalPrice)
     })
   }, [data, price]);
+
+  useEffect(() => {
+    let arrId: any[] = []
+    data?.customer.orderitems.forEach((orderItem: CartItem) => {
+      arrId.push({ id: orderItem.id })
+      setorderItemsIds(arrId)
+    })
+  }, [data]);
 
   const columns: ColumnsType<CartItem> = [
     {
@@ -123,7 +133,7 @@ export default function Cart() {
             <div className={s.product_total}>Product Total : <b>{price} USD</b></div>
             <div className={s.line}></div>
             <div className={s.total}><b>{price} USD</b> </div>
-            <a onClick={() => createOrder({ variables: { email: user?.email, input: price } })}>
+            <a onClick={() => createOrder({ variables: { id: { connect: { id: data?.customer.id } }, input: price, cart: { connect: orderItemsIds } } })}>
               <Order id={OrderId} />
             </a>
           </div>

@@ -6,9 +6,10 @@ import { ShoppingCartOutlined, UserOutlined, UserDeleteOutlined } from '@ant-des
 import { Button } from 'antd';
 import { Badge } from 'antd';
 import { CUSTOMER } from '../pages/api/query/getCustomer';
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { CartItem } from '@/pages/api/types/Types';
 import { useUser } from '@auth0/nextjs-auth0/client';
+import { CREATE_CUSTOMER } from '../pages/api/mutation/createCustomer'
 
 
 const Header = () => {
@@ -16,16 +17,27 @@ const Header = () => {
 
   const { user, isLoading } = useUser();
   const { data, loading, error } = useQuery(CUSTOMER, { variables: { email: user?.email } });
+  const [createCustomer] = useMutation(CREATE_CUSTOMER, {
+    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } }],
+    awaitRefetchQueries: true
+  })
 
   useEffect(() => {
     if (data)
-      setCountItems(data?.customer.orderitems.reduce((acc: number, curent: CartItem) => {
+      setCountItems(data?.customer?.orderitems.reduce((acc: number, curent: CartItem) => {
         return acc + curent.quantity;
       }, 0))
   }, [data])
 
+  useEffect(() => {
+    if (!loading && !data && user) {
+      createCustomer({ variables: { email: user?.email, name: user?.name } })
+    }
+  }, [data, user])
+
+
   return (
-    <>{!user ?
+    <>{!data ?
       <div className={s.header}>
         <div className={s.logobox}>
           <Link href="/">
@@ -64,7 +76,7 @@ const Header = () => {
           <div className={s.user_button}>
             <Link href="/profile">
               <Button type="primary" shape="circle" icon={<UserOutlined />} size='large' />
-              <div className={s.user_name}>{user.email}</div>
+              <div className={s.user_name}>{data.customer.email}</div>
             </Link>
           </div>
           <div className={s.cart_button}>
