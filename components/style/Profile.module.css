@@ -1,5 +1,60 @@
 .menu {
     display: flex;
     flex-direction: row;
-    margin-top: 50px;
+    margin-top: 80px;
+}
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    margin-left: 50px;
+    width: 600px;
+}
+
+.orders {
+    display: flex;
+    flex-direction: column;
+    margin-left: 50px;
+    width: 600px;
+}
+
+.order {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    border-bottom: 1px solid gray;
+    padding-bottom: 10px;
+}
+
+.data_price {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+.price,
+.data {
+    font-weight: bolder;
+}
+
+.info_item {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.info_item div {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.name_email div {
+    margin-bottom: 10px;
+}
+
+.address {
+    margin-top: 20px;
+    margin-bottom: 50px;
 }

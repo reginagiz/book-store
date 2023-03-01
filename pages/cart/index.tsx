@@ -13,6 +13,7 @@ import s from '../../components/style/Cart.module.css'
 import { CartItem } from "../api/types/Types";
 import { useUser } from '@auth0/nextjs-auth0/client';
 import Order from "@/components/orderModal";
+import { GET_ORDERS } from '../api/query/getOrders';
 
 
 export default function Cart() {
@@ -21,7 +22,6 @@ export default function Cart() {
   const { user, isLoading } = useUser();
   const { data, loading, error } = useQuery(CUSTOMER, { variables: { email: user?.email } });
 
-  console.log(data?.customer)
   const [deleteOrderItem] = useMutation(DELETE_ORDER_ITEM, {
     refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } }, { query: ITEMS_COUNT_QUERY }]
   });
@@ -30,7 +30,8 @@ export default function Cart() {
   })
 
   const [createOrder, { data: order }] = useMutation(CREATE_ORDER, {
-    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } }],
+    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } },
+    { query: GET_ORDERS, variables: { input: { id: { equals: data?.customer.id } } } }],
     awaitRefetchQueries: true
   })
   const OrderId = order?.createOrder.id

@@ -3,8 +3,9 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 import { useQuery } from "@apollo/client";
 import { CUSTOMER } from '../api/query/getCustomer';
 import { GET_ORDERS } from '../api/query/getOrders';
-import { Menu, Button } from 'antd';
+import { Menu, Button, Collapse } from 'antd';
 import s from '../../components/style/Profile.module.css'
+import AddressForm from '@/components/addressForm';
 
 export default function Profile() {
     const { user, isLoading } = useUser();
@@ -12,38 +13,58 @@ export default function Profile() {
     const { data: orders } = useQuery(GET_ORDERS, { variables: { input: { id: { equals: data?.customer.id } } } });
     const [selectedMenuItem, setSelectedMenuItem] = useState('item1');
 
-    console.log(orders?.orders)
+    const { Panel } = Collapse;
 
     const componentsSwtich = (key: any) => {
         switch (key) {
             case 'item1':
                 return (
                     <div className={s.profile}>
-                        <div>{data.customer.name}</div>
-                        <div>{data.customer.email}</div>
-                        <a href="/api/auth/logout">
-                            <Button type="primary">Log out</Button>
-                        </a>
+                        <div className={s.name_email}>
+                            <div><b>Name:</b> {data.customer.name}</div>
+                            <div><b>Email:</b> {data.customer.email}</div>
+                        </div>
+                        <div className={s.address}>
+                            <Collapse>
+                                <Panel header="Add address for delivery" key="1">
+                                    <AddressForm />
+                                </Panel>
+                            </Collapse>
+                        </div>
+                        <div>
+                            <a href="/api/auth/logout">
+                                <Button type="primary">Log out</Button>
+                            </a>
+                        </div>
                     </div>
                 );
             case 'item2':
                 return (
-                    <div>
-                        <div>{orders?.orders?.map((order: any) => {
-                            <div>
-                                <div>{order.createdAt}</div>
-                                <div>{order.totalprice}</div>
-                                {order?.cart?.map((cartItem: any) => {
-                                    <div>
-                                        <div>{cartItem.quantity}</div>
-                                        <div>{cartItem.product.title}</div>
-                                        <div>{cartItem.product.author.name}</div>
-                                        <div>{cartItem.product.price * cartItem.quantity}</div>
+                    <>{orders?.orders ?
+                        <div className={s.orders}>{orders?.orders?.map((order: any) => {
+                            return (
+                                <div className={s.order}>
+                                    <div className={s.data_price}>
+                                        <div className={s.data}>{order.createdAt.slice(0, 10)}</div>
+                                        <div className={s.price}>{order.totalprice} USD</div>
                                     </div>
-                                })}
-                            </div>
-                        })}</div>
-                    </div>
+                                    {order?.cart?.map((cartItem: any) => {
+                                        return (
+                                            <div className={s.info_item}>
+                                                <div>"{cartItem.product.title}"</div>
+                                                <div>{cartItem.product.author.name}</div>
+                                                <div>({cartItem.quantity})</div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            )
+                        })}
+                        </div>
+                        : <div>You don't have orders yet</div>
+                    }
+                    </>
+
                 );
             default:
                 break;
