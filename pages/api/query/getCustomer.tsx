@@ -6,6 +6,14 @@ query CUSTOMER($email: String) {
     id
     name
     email
+    address{
+      id
+      country
+      city
+      street
+      build
+      index
+    }
     orderitems {
       id
       quantity

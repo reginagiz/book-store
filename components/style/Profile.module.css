@@ -32,6 +32,7 @@
     flex-wrap: nowrap;
     margin-bottom: 10px;
     justify-content: space-between;
+    color: #1677ff;
 }
 
 .price,
@@ -57,4 +58,34 @@
 .address {
     margin-top: 20px;
     margin-bottom: 50px;
+}
+
+.address_box {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    border: 1px;
+    background-color: #e6f4ff;
+    color: #1677ff;
+    border-radius: 5px;
+    width: fit-content;
+    padding: 15px 10px;
+}
+
+.address_box:hover {
+    transform: scale(1.1);
+}
+
+.address_box div {
+    margin-bottom: 5px;
+}
+
+.delete_button {
+    border: none;
+    display: flex;
+    align-self: flex-end;
+    color: #1677ff;
+    margin-bottom: 5px;
+    margin-top: -10px;
 }

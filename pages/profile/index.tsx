@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useUser } from '@auth0/nextjs-auth0/client';
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { CUSTOMER } from '../api/query/getCustomer';
 import { GET_ORDERS } from '../api/query/getOrders';
+import { DELETE_ADDRESS } from '../api/mutation/deleteAddress';
 import { Menu, Button, Collapse } from 'antd';
 import s from '../../components/style/Profile.module.css'
 import AddressForm from '@/components/addressForm';
@@ -11,9 +12,13 @@ export default function Profile() {
     const { user, isLoading } = useUser();
     const { data, loading, error } = useQuery(CUSTOMER, { variables: { email: user?.email } });
     const { data: orders } = useQuery(GET_ORDERS, { variables: { input: { id: { equals: data?.customer.id } } } });
+    const [deleteAddress] = useMutation(DELETE_ADDRESS, {
+        refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } }]
+    })
     const [selectedMenuItem, setSelectedMenuItem] = useState('item1');
 
     const { Panel } = Collapse;
+    const customerId = data?.customer.id
 
     const componentsSwtich = (key: any) => {
         switch (key) {
@@ -24,13 +29,42 @@ export default function Profile() {
                             <div><b>Name:</b> {data.customer.name}</div>
                             <div><b>Email:</b> {data.customer.email}</div>
                         </div>
-                        <div className={s.address}>
-                            <Collapse>
-                                <Panel header="Add address for delivery" key="1">
-                                    <AddressForm />
-                                </Panel>
-                            </Collapse>
-                        </div>
+                        {data?.customer.address.length > 0 ?
+                            <div>
+                                <div><b>Your address:</b></div>
+                                {data?.customer.address.map((e: any) => {
+                                    return (
+                                        <div>
+                                            <div className={s.address_box}>
+                                                <button className={s.delete_button}
+                                                    onClick={() => deleteAddress({ variables: { id: e.id } })}><b>x</b>
+                                                </button>
+                                                <div>Country: {e.country}</div>
+                                                <div>City: {e.city}</div>
+                                                <div>Street: {e.street}</div>
+                                                <div>Build number: {e.build}</div>
+                                                <div>Index: {e.index}</div>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                                <div className={s.address}>
+                                    <Collapse>
+                                        <Panel header="Add new address for delivery" key="1">
+                                            <AddressForm id={customerId} />
+                                        </Panel>
+                                    </Collapse>
+                                </div>
+                            </div>
+                            :
+                            <div className={s.address}>
+                                <Collapse>
+                                    <Panel header="Add address for delivery" key="1">
+                                        <AddressForm id={customerId} />
+                                    </Panel>
+                                </Collapse>
+                            </div>
+                        }
                         <div>
                             <a href="/api/auth/logout">
                                 <Button type="primary">Log out</Button>
@@ -64,7 +98,6 @@ export default function Profile() {
                         : <div>You don't have orders yet</div>
                     }
                     </>
-
                 );
             default:
                 break;
