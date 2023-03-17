@@ -23,3 +23,11 @@ export type Customer = {
     email: string;
     id: string;
 };
+export type Address = {
+    id: string;
+    country: string;
+    city: string;
+    street: string;
+    index: string;
+    build: string;
+};

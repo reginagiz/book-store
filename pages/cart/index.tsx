@@ -4,22 +4,20 @@ import { Table, Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useMutation, useQuery } from "@apollo/client";
 import { CUSTOMER } from "../api/query/getCustomer";
-import { CREATE_ORDER } from "../api/mutation/createOrder";
 import { DELETE_ORDER_ITEM } from "../api/mutation/deleteOrderItem";
 import { ITEMS_COUNT_QUERY } from '../api/query/getOrderItemsCount'
 import { UPDATE_ORDER_ITEM } from '../api/mutation/updateOrdrItem'
-import { GET_ORDER } from "../api/query/getOrder";
 import s from '../../components/style/Cart.module.css'
 import { CartItem } from "../api/types/Types";
 import { useUser } from '@auth0/nextjs-auth0/client';
 import Order from "@/components/orderModal";
-import { GET_ORDERS } from '../api/query/getOrders';
 
 
 export default function Cart() {
   const [price, setPrice] = useState(0);
-  const [orderItemsIds, setorderItemsIds] = useState<any[]>([]);
+
   const { user, isLoading } = useUser();
+
   const { data, loading, error } = useQuery(CUSTOMER, { variables: { email: user?.email } });
 
   const [deleteOrderItem] = useMutation(DELETE_ORDER_ITEM, {
@@ -29,13 +27,6 @@ export default function Cart() {
     refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } }, { query: ITEMS_COUNT_QUERY }]
   })
 
-  const [createOrder, { data: order }] = useMutation(CREATE_ORDER, {
-    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } },
-    { query: GET_ORDERS, variables: { input: { id: { equals: data?.customer.id } } } }],
-    awaitRefetchQueries: true
-  })
-  const OrderId = order?.createOrder.id
-
   useEffect(() => {
     let totalPrice = 0
     data?.customer.orderitems.forEach((orderItem: CartItem) => {
@@ -43,14 +34,6 @@ export default function Cart() {
       setPrice(totalPrice)
     })
   }, [data, price]);
-
-  useEffect(() => {
-    let arrId: any[] = []
-    data?.customer.orderitems.forEach((orderItem: CartItem) => {
-      arrId.push({ id: orderItem.id })
-      setorderItemsIds(arrId)
-    })
-  }, [data]);
 
   const columns: ColumnsType<CartItem> = [
     {
@@ -134,9 +117,7 @@ export default function Cart() {
             <div className={s.product_total}>Product Total : <b>{price} USD</b></div>
             <div className={s.line}></div>
             <div className={s.total}><b>{price} USD</b> </div>
-            <a onClick={() => createOrder({ variables: { id: { connect: { id: data?.customer.id } }, input: price, cart: { connect: orderItemsIds } } })}>
-              <Order id={OrderId} />
-            </a>
+            <Order price={price} />
           </div>
         </div>
       </div>

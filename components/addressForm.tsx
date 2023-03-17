@@ -63,7 +63,7 @@ const AddressForm = (orderId: MyProps) => {
                 <Input />
             </Form.Item>
             <Form.Item
-                label="Building number"
+                label="Building"
                 name="building_number"
                 rules={[{ required: true, message: 'Please input your building number!' }]}
             >

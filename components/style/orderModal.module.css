@@ -11,15 +11,23 @@
 }
 
 .user_info div {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.address_form {
+    margin-left: -60px;
 }
 
 .books_info {
     display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid gray;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    font-size: 12px;
+}
+
+.books_info div {
+    margin-left: 3px;
+    margin-bottom: 5px;
 }
 
 .total_price b {
@@ -27,10 +35,43 @@
 }
 
 .total_price {
+    margin-top: 15px;
     font-weight: bold;
+    color: #1677ff;
+
 }
 
 .confirm {
     text-transform: uppercase;
     margin-top: -30px;
+}
+
+.address_box {
+    display: flex;
+    flex-direction: row;
+    border: 1px;
+    background-color: #e6f4ff;
+    color: #1677ff;
+    border-radius: 5px;
+    width: fit-content;
+    flex-wrap: wrap;
+    padding: 10px;
+    font-size: 11px;
+}
+
+.address_box div {
+    margin-left: 5px;
+}
+
+.address_title,
+.order_title {
+    color: #1677ff;
+    font-weight: bolder;
+    margin-bottom: 10px;
+}
+
+.books {
+    border-bottom: 2px solid gray;
+    padding-bottom: 10px;
+
 }

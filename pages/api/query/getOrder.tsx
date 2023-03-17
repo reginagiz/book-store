@@ -6,9 +6,18 @@ query GET_ORDER($id: ID!) {
     id
     createdAt
     totalprice
-    customer{
+     customer {
+      id
       name
       email
+      address{
+        id
+        country
+        city
+        street
+        index
+        build
+      }
     }
     cart{
       quantity
