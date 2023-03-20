@@ -63,7 +63,7 @@
 .address_box {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin-left: 10px;
     margin-top: 10px;
     border: 1px;
     background-color: #e6f4ff;
@@ -88,4 +88,10 @@
     color: #1677ff;
     margin-bottom: 5px;
     margin-top: -10px;
+}
+
+.all_addresses {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }

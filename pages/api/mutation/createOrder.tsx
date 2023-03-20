@@ -5,9 +5,16 @@ mutation CREATE_ORDER(
   $id: CustomerRelateToOneForCreateInput
   $input: Int
   $cart: OrderItemRelateToManyForCreateInput
+  $address: AddressRelateToOneForCreateInput
 ) {
-  createOrder(data: { totalprice: $input, cart: $cart, customer: $id }) {
+  createOrder(
+    data: { totalprice: $input, cart: $cart, 
+    customer: $id, address: $address }
+  ) {
     id
+    address{
+      country
+    }
     customer {
       name
       email
@@ -29,5 +36,6 @@ mutation CREATE_ORDER(
     }
   }
 }
+
 
 `;

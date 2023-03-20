@@ -32,22 +32,25 @@ export default function Profile() {
                         {data?.customer.address.length > 0 ?
                             <div>
                                 <div><b>Your address:</b></div>
-                                {data?.customer.address.map((e: any) => {
-                                    return (
-                                        <div>
-                                            <div className={s.address_box}>
-                                                <button className={s.delete_button}
-                                                    onClick={() => deleteAddress({ variables: { id: e.id } })}><b>x</b>
-                                                </button>
-                                                <div>Country: {e.country}</div>
-                                                <div>City: {e.city}</div>
-                                                <div>Street: {e.street}</div>
-                                                <div>Build number: {e.build}</div>
-                                                <div>Index: {e.index}</div>
+                                <div className={s.all_addresses}>
+                                    {data?.customer.address.map((e: any) => {
+                                        return (
+                                            <div>
+                                                <div className={s.address_box}>
+                                                    <button className={s.delete_button}
+                                                        onClick={() => deleteAddress({ variables: { id: e.id } })}><b>x</b>
+                                                    </button>
+                                                    <div>Country: {e.country}</div>
+                                                    <div>City: {e.city}</div>
+                                                    <div>Street: {e.street}</div>
+                                                    <div>Build number: {e.build}</div>
+                                                    <div>Index: {e.index}</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    )
-                                })}
+                                        )
+                                    })}
+                                </div>
+
                                 <div className={s.address}>
                                     <Collapse>
                                         <Panel header="Add new address for delivery" key="1">

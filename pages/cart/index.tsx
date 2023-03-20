@@ -117,7 +117,7 @@ export default function Cart() {
             <div className={s.product_total}>Product Total : <b>{price} USD</b></div>
             <div className={s.line}></div>
             <div className={s.total}><b>{price} USD</b> </div>
-            <Order price={price} />
+            <div><Order price={price} /></div>
           </div>
         </div>
       </div>
