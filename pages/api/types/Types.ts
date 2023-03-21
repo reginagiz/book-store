@@ -10,7 +10,7 @@ export type Product = {
     id: string;
     quantity: number;
     author: Author;
-    avatar: Avatar
+    avatar?: Avatar
 };
 export type Author = {
     name: string;
@@ -30,4 +30,12 @@ export type Address = {
     street: string;
     index: string;
     build: string;
+};
+export type Order = {
+    id: string;
+    address: Address;
+    customer: Customer;
+    createdAt: string;
+    totalprice: number;
+    cart: [CartItem];
 };

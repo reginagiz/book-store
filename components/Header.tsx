@@ -35,6 +35,7 @@ const Header = () => {
     }
   }, [data, user])
 
+  console.log(user?.email)
 
   return (
     <>{!data ?
@@ -76,7 +77,7 @@ const Header = () => {
           <div className={s.user_button}>
             <Link href="/profile">
               <Button type="primary" shape="circle" icon={<UserOutlined />} size='large' />
-              <div className={s.user_name}>{data.customer.email}</div>
+              <div className={s.user_name}>{data?.customer?.email}</div>
             </Link>
           </div>
           <div className={s.cart_button}>

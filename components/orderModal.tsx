@@ -10,6 +10,7 @@ import { CREATE_ORDER } from '@/pages/api/mutation/createOrder';
 import { CUSTOMER } from '@/pages/api/query/getCustomer';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { CartItem } from '@/pages/api/types/Types';
+import { GET_ORDERS } from '@/pages/api/query/getOrders';
 
 interface MyProps {
   price: number,
@@ -24,8 +25,9 @@ const Order = (totalPrice: MyProps) => {
 
   const [value, setValue] = useState<Address>(data?.customer.address[0]);
 
-  const [createOrder, { data: order }] = useMutation(CREATE_ORDER, {
-    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } }],
+  const [createOrder] = useMutation(CREATE_ORDER, {
+    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } },
+    { query: GET_ORDERS, variables: { input: { id: { equals: data?.customer.id } } } }],
     awaitRefetchQueries: true
   })
 

@@ -62,9 +62,9 @@
 
 .address_box {
     display: flex;
-    flex-direction: column;
-    margin-left: 10px;
+    flex-direction: row;
     margin-top: 10px;
+    margin-right: 10px;
     border: 1px;
     background-color: #e6f4ff;
     color: #1677ff;
@@ -73,12 +73,9 @@
     padding: 15px 10px;
 }
 
-.address_box:hover {
-    transform: scale(1.1);
-}
-
 .address_box div {
     margin-bottom: 5px;
+    margin-left: 5px;
 }
 
 .delete_button {
@@ -88,10 +85,29 @@
     color: #1677ff;
     margin-bottom: 5px;
     margin-top: -10px;
+    background-color: inherit;
 }
 
 .all_addresses {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+}
+
+.order_address {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin-left: 5px;
+}
+
+.order_address div {
+    margin-left: 10px;
+    font-size: 12px;
+    color: gray;
+}
+
+.profile div b {
+    color: #1677ff;
+
 }
