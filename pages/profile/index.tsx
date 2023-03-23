@@ -11,11 +11,11 @@ import { Order, CartItem, Address } from '../api/types/Types';
 
 export default function Profile() {
   const { user, isLoading } = useUser();
-  const { data, loading, error } = useQuery(CUSTOMER, { variables: { email: user?.email } });
+  const { data, loading, error } = useQuery(CUSTOMER, { variables: { email: user?.email, status: { equals: "unarchived" } } });
   const { data: orders } = useQuery(GET_ORDERS, { variables: { input: { id: { equals: data?.customer?.id } } } });
 
   const [deleteAddress] = useMutation(DELETE_ADDRESS, {
-    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } }]
+    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email, status: { equals: "unarchived" } } }]
   })
   const [selectedMenuItem, setSelectedMenuItem] = useState('item1');
 

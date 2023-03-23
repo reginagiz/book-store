@@ -4,13 +4,13 @@ import { Table, Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useMutation, useQuery } from "@apollo/client";
 import { CUSTOMER } from "../api/query/getCustomer";
-import { DELETE_ORDER_ITEM } from "../api/mutation/deleteOrderItem";
+import { ARCHIVE_ORDER_ITEM } from "../api/mutation/archiveOrderItem";
 import { ITEMS_COUNT_QUERY } from '../api/query/getOrderItemsCount'
 import { UPDATE_ORDER_ITEM } from '../api/mutation/updateOrdrItem'
 import s from '../../components/style/Cart.module.css'
 import { CartItem } from "../api/types/Types";
 import { useUser } from '@auth0/nextjs-auth0/client';
-import Order from "@/components/orderModal";
+import OrderModal from "@/components/orderModal";
 
 
 export default function Cart() {
@@ -18,13 +18,13 @@ export default function Cart() {
 
   const { user, isLoading } = useUser();
 
-  const { data, loading, error } = useQuery(CUSTOMER, { variables: { email: user?.email } });
+  const { data, loading, error } = useQuery(CUSTOMER, { variables: { email: user?.email, status: { equals: "unarchived" } } });
 
-  const [deleteOrderItem] = useMutation(DELETE_ORDER_ITEM, {
-    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } }, { query: ITEMS_COUNT_QUERY }]
+  const [archiveOrderItem] = useMutation(ARCHIVE_ORDER_ITEM, {
+    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email, status: { equals: "unarchived" } } }, { query: ITEMS_COUNT_QUERY }]
   });
   const [updateOrderItem] = useMutation(UPDATE_ORDER_ITEM, {
-    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } }, { query: ITEMS_COUNT_QUERY }]
+    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email, status: { equals: "unarchived" } } }, { query: ITEMS_COUNT_QUERY }]
   })
 
   useEffect(() => {
@@ -74,7 +74,7 @@ export default function Cart() {
             &nbsp;{quantity}&nbsp;
           </li>
           <Button onClick={() => {
-            quantity === 1 ? deleteOrderItem({ variables: { id: orderItem.id } })
+            quantity === 1 ? archiveOrderItem({ variables: { id: orderItem.id, input: "archived" } })
               : updateOrderItem({ variables: { id: orderItem.id, input: quantity - 1 } })
           }}>-
           </Button>
@@ -91,7 +91,7 @@ export default function Cart() {
       title: 'Remove',
       key: 'action',
       render: (_, orderItem) => (
-        <Button onClick={() => deleteOrderItem({ variables: { id: orderItem.id } })}>X</Button >
+        <Button onClick={() => archiveOrderItem({ variables: { id: orderItem.id, input: "archived" } })}>X</Button >
       ),
     }
   ];
@@ -109,7 +109,7 @@ export default function Cart() {
         <div className={s.title}>My shopping cart</div>
         <div className={s.table_total}>
           <div className={s.table_container}>
-            <Table columns={columns} dataSource={data?.customer.orderitems} pagination={false} size='middle' />
+            <Table columns={columns} dataSource={data?.customer?.orderitems} pagination={false} size='middle' />
           </div>
           <div className={s.delivery_total}>
             <div className={s.delivery_total_title}>Order Summary</div>
@@ -117,7 +117,7 @@ export default function Cart() {
             <div className={s.product_total}>Product Total : <b>{price} USD</b></div>
             <div className={s.line}></div>
             <div className={s.total}><b>{price} USD</b> </div>
-            <div><Order price={price} /></div>
+            <div><OrderModal price={price} /></div>
           </div>
         </div>
       </div>

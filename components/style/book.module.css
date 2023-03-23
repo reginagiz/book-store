@@ -1,73 +1,91 @@
-.book{
-    display:flex;
+.book {
+    display: flex;
     flex-direction: row;
     margin-top: 80px;
-    flex-wrap:wrap;
+    flex-wrap: wrap;
     justify-content: flex-start;
     align-items: flex-start;
-    margin-left:90px;
+    margin-left: 90px;
     margin-bottom: 50px;
 }
-.imgbox{
-    display:flex;
+
+.imgbox {
+    display: flex;
     flex-direction: column;
-    width:40%;
-    margin-right:50px;
-    height:5%;
+    width: 40%;
+    margin-right: 50px;
+    height: 5%;
 }
-.info{
-    display:flex;
+
+.info {
+    display: flex;
     flex-direction: column;
-    width:40%; 
+    width: 40%;
 }
-.info div{
-    margin-bottom:20px;
+
+.info div {
+    margin-bottom: 20px;
 }
+
 .description {
-   margin-bottom:20px;
-   font-size:medium;
-   line-height:30px;
-   max-height: 280px;
-   overflow: auto;
+    margin-bottom: 20px;
+    font-size: medium;
+    line-height: 30px;
+    max-height: 230px;
+    overflow: auto;
 }
-.title, .price{
-    font-size:30px;
-    font-weight:bold;
+
+.title,
+.price {
+    font-size: 30px;
+    font-weight: bold;
 }
-.price{
-    color:#d63447;
+
+.price {
+    color: #d63447;
 }
-.author{
-    margin-top:-15px;
+
+.author {
+    margin-top: -15px;
 }
-.info div b{
-    font-size:18px;
+
+.info div b {
+    font-size: 18px;
 }
-.button{
-    font-size:18px;
+
+.button {
+    font-size: 18px;
     height: 60px;
     text-transform: uppercase;
 }
-.shipping_return{
+
+.shipping_return {
     display: flex;
     flex-direction: column;
 }
-.shipping{
+
+.shipping {
     display: flex;
     flex-direction: row;
     margin-top: 20px;
 }
-.return{
+
+.return {
     display: flex;
     flex-direction: row;
 }
-.shipping div, .return div{
+
+.shipping div,
+.return div {
     margin-left: 15px;
 }
-.return div{
+
+.return div {
     margin-bottom: 0;
 }
-.shipping div p, .return div p{
+
+.shipping div p,
+.return div p {
     text-transform: uppercase;
     font-weight: bold;
     margin-bottom: 0;

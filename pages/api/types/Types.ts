@@ -1,4 +1,3 @@
-
 export type CartItem = {
     product: Product;
     quantity: number;
@@ -22,6 +21,9 @@ export type Customer = {
     name: string;
     email: string;
     id: string;
+    orderitems?: [CartItem];
+    orders?: [Order];
+    address?: [Address];
 };
 export type Address = {
     id: string;

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Carousel } from 'antd';
-import quote1 from '../quote1.jpg'
-import quote2 from '../quote2.jpg'
-import quote3 from '../quote3.jpg'
-import quote4 from '../quote4.jpg'
+import quote1 from '../components/images/quote1.jpg'
+import quote2 from '../components/images/quote2.jpg'
+import quote3 from '../components/images/quote3.jpg'
+import quote4 from '../components/images/quote4.jpg'
 import s from './style/Carousel.module.css'
 
 

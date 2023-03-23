@@ -1,4 +1,4 @@
-import logo from '../logo.png'
+import logo from '../components/images/logo.png'
 import React, { useEffect, useState, useContext } from 'react';
 import s from './style/Header.module.css'
 import Link from "next/link";
@@ -16,9 +16,10 @@ const Header = () => {
   const [countItems, setCountItems] = useState<number>(0);
 
   const { user, isLoading } = useUser();
-  const { data, loading, error } = useQuery(CUSTOMER, { variables: { email: user?.email } });
+
+  const { data, loading, error } = useQuery(CUSTOMER, { variables: { email: user?.email, status: { equals: "unarchived" } } });
   const [createCustomer] = useMutation(CREATE_CUSTOMER, {
-    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } }],
+    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email, status: { equals: "unarchived" } } }],
     awaitRefetchQueries: true
   })
 
@@ -34,8 +35,6 @@ const Header = () => {
       createCustomer({ variables: { email: user?.email, name: user?.name } })
     }
   }, [data, user])
-
-  console.log(user?.email)
 
   return (
     <>{!data ?

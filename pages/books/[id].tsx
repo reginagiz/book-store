@@ -1,5 +1,4 @@
-import Link from "next/link";
-import s from '../../components/style/book.module.css';
+import s from '../../components/style/Book.module.css';
 import { Button } from 'antd';
 import { ShoppingOutlined, ExportOutlined } from '@ant-design/icons';
 import { useMutation, useQuery } from "@apollo/client";
@@ -25,19 +24,19 @@ export default function Book() {
   const { data: bookData, loading, error } = useQuery(BOOK_QUERY, { variables: { id } });
 
   const { user, isLoading } = useUser();
-  const { data } = useQuery(CUSTOMER, { variables: { email: user?.email } });
+  const { data } = useQuery(CUSTOMER, { variables: { email: user?.email, status: { equals: "unarchived" } } });
 
   const [createCustomer] = useMutation(CREATE_CUSTOMER, {
-    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } }],
+    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email, status: { equals: "unarchived" } } }],
     awaitRefetchQueries: true
   })
 
   const [createOrderItem] = useMutation(CREATE_ORDER_ITEM, {
-    refetchQueries: [{ query: ITEMS_COUNT_QUERY }, { query: CUSTOMER, variables: { email: user?.email } }],
+    refetchQueries: [{ query: ITEMS_COUNT_QUERY }, { query: CUSTOMER, variables: { email: user?.email, status: { equals: "unarchived" } } }],
     awaitRefetchQueries: true
   })
   const [updateOrderItem] = useMutation(UPDATE_ORDER_ITEM, {
-    refetchQueries: [{ query: ITEMS_COUNT_QUERY }, { query: CUSTOMER, variables: { email: user?.email } }],
+    refetchQueries: [{ query: ITEMS_COUNT_QUERY }, { query: CUSTOMER, variables: { email: user?.email, status: { equals: "unarchived" } } }],
     awaitRefetchQueries: true
   })
 
@@ -50,17 +49,15 @@ export default function Book() {
   const addItemToCart = () => {
     if (cartItem) {
       updateOrderItem({ variables: { id: cartItem.id, input: cartItem.quantity + 1 } });
-      openNotification(bookData)
     }
     else if (data && !cartItem) {
       createOrderItem({ variables: { id: id, email: user?.email } })
-      openNotification(bookData)
     }
     else if (!data && !cartItem) {
       createCustomer({ variables: { email: user?.email, name: user?.name } })
       createOrderItem({ variables: { id: id, email: user?.email } })
-      openNotification(bookData)
     }
+    openNotification(bookData)
   }
 
   if (loading) {

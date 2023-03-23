@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { SyntheticEvent, useEffect, useState } from 'react';
 import { Button, Modal } from 'antd';
 import { useMutation, useQuery } from '@apollo/client';
-import s from '../components/style/orderModal.module.css'
+import s from '../components/style/OrderModal.module.css'
 import type { RadioChangeEvent } from 'antd';
 import { Radio } from 'antd';
 import AddressForm from './addressForm';
@@ -15,24 +15,29 @@ import { GET_ORDERS } from '@/pages/api/query/getOrders';
 interface MyProps {
   price: number,
 }
-const Order = (totalPrice: MyProps) => {
+
+type OrderItemId = {
+  id: number
+}
+
+const OrderModal = (totalPrice: MyProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [orderItemsIds, setorderItemsIds] = useState<any[]>([]);
+  const [orderItemsIds, setorderItemsIds] = useState<OrderItemId[]>([]);
   const [isShown, setIsShown] = useState(false);
 
   const { user, isLoading } = useUser();
-  const { data, loading, error } = useQuery(CUSTOMER, { variables: { email: user?.email } });
+  const { data, loading, error } = useQuery(CUSTOMER, { variables: { email: user?.email, status: { equals: "unarchived" } } });
 
   const [value, setValue] = useState<Address>(data?.customer.address[0]);
 
   const [createOrder] = useMutation(CREATE_ORDER, {
-    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } },
+    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email, status: { equals: "unarchived" } } },
     { query: GET_ORDERS, variables: { input: { id: { equals: data?.customer.id } } } }],
     awaitRefetchQueries: true
   })
 
   useEffect(() => {
-    let arrId: any[] = []
+    let arrId: OrderItemId[] = []
     data?.customer.orderitems.forEach((orderItem: CartItem) => {
       arrId.push({ id: orderItem.id })
       setorderItemsIds(arrId)
@@ -61,7 +66,7 @@ const Order = (totalPrice: MyProps) => {
   const handleCancel = () => {
     setIsModalOpen(current => !current);
   };
-  const handleClick = (event: any) => {
+  const handleClick = (event: SyntheticEvent) => {
     setIsShown(current => !current);
   };
 
@@ -114,9 +119,9 @@ const Order = (totalPrice: MyProps) => {
                 <div className={s.books}>{data?.customer.orderitems.map((e: any) => {
                   return (
                     <div className={s.books_info}>
-                      <div>"{e.product.title}"</div>
-                      <div>{e.product.author.name}</div>
-                      <div>{e.product.price * e.quantity} USD</div>
+                      <div>"{e.product?.title}"</div>
+                      <div>{e.product?.author?.name}</div>
+                      <div>{e.product?.price * e.quantity} USD</div>
                       <div>({e.quantity})</div>
                     </div>
                   )
@@ -134,4 +139,4 @@ const Order = (totalPrice: MyProps) => {
   );
 };
 
-export default Order;
+export default OrderModal;

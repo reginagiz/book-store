@@ -10,11 +10,12 @@ interface MyProps {
 }
 
 const AddressForm = (orderId: MyProps) => {
+  const [form] = Form.useForm();
   const { user, isLoading } = useUser();
   const id = orderId.id
 
   const [createAddress] = useMutation(CREATE_ADDRESS, {
-    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email } }]
+    refetchQueries: [{ query: CUSTOMER, variables: { email: user?.email, status: { equals: "unarchived" } } }]
   })
 
   const onFinish = (values: any) => {
@@ -40,6 +41,7 @@ const AddressForm = (orderId: MyProps) => {
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
+      form={form}
     >
       <Form.Item
         label="Country"
@@ -78,7 +80,7 @@ const AddressForm = (orderId: MyProps) => {
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit"  >
           Save
         </Button>
       </Form.Item>
