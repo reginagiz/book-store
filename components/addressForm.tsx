@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Form, Input } from 'antd';
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { CREATE_ADDRESS } from "../pages/api/mutation/createAddress";
 import { CUSTOMER } from "../pages/api/query/getCustomer";
 import { useUser } from '@auth0/nextjs-auth0/client';
@@ -22,7 +22,7 @@ const AddressForm = (orderId: MyProps) => {
     createAddress({
       variables: {
         id: id, country: values.country, city: values.city, street: values.street,
-        build: values.building_number, index: values.index
+        build: values.build, index: values.index
       }
     })
   };
@@ -66,7 +66,7 @@ const AddressForm = (orderId: MyProps) => {
       </Form.Item>
       <Form.Item
         label="Building"
-        name="building_number"
+        name="build"
         rules={[{ required: true, message: 'Please input your building number!' }]}
       >
         <Input />

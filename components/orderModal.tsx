@@ -4,13 +4,14 @@ import { useMutation, useQuery } from '@apollo/client';
 import s from '../components/style/OrderModal.module.css'
 import type { RadioChangeEvent } from 'antd';
 import { Radio } from 'antd';
-import AddressForm from './addressForm';
+import AddressForm from './AddressForm';
 import { Address } from '@/pages/api/types/Types';
 import { CREATE_ORDER } from '@/pages/api/mutation/createOrder';
 import { CUSTOMER } from '@/pages/api/query/getCustomer';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { CartItem } from '@/pages/api/types/Types';
 import { GET_ORDERS } from '@/pages/api/query/getOrders';
+
 
 interface MyProps {
   price: number,

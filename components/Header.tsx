@@ -1,8 +1,8 @@
 import logo from '../components/images/logo.png'
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import s from './style/Header.module.css'
 import Link from "next/link";
-import { ShoppingCartOutlined, UserOutlined, UserDeleteOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { Badge } from 'antd';
 import { CUSTOMER } from '../pages/api/query/getCustomer';

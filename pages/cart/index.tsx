@@ -10,7 +10,7 @@ import { UPDATE_ORDER_ITEM } from '../api/mutation/updateOrdrItem'
 import s from '../../components/style/Cart.module.css'
 import { CartItem } from "../api/types/Types";
 import { useUser } from '@auth0/nextjs-auth0/client';
-import OrderModal from "@/components/orderModal";
+import OrderModal from "@/components/OrderModal";
 
 
 export default function Cart() {

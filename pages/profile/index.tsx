@@ -6,7 +6,7 @@ import { GET_ORDERS } from '../api/query/getOrders';
 import { DELETE_ADDRESS } from '../api/mutation/deleteAddress';
 import { Menu, Button, Collapse } from 'antd';
 import s from '../../components/style/Profile.module.css'
-import AddressForm from '@/components/addressForm';
+import AddressForm from '@/components/AddressForm';
 import { Order, CartItem, Address } from '../api/types/Types';
 
 export default function Profile() {
