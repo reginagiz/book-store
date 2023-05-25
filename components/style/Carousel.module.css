@@ -1,8 +1,41 @@
-.background {
-    background-color: #C0C0C0;
-    width: 100%;
-    height: 660px;
-    margin: 0 auto;
-    margin-top: 60px;
-    margin-bottom: 60px;
+.carousel,
+.description {
+  min-width: 100%;
+}
+.carousel_container {
+  min-width: 352px;
+}
+.title {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+  text-transform: uppercase;
+  color: #1677ff;
+  min-width: 320px;
+}
+.title::before,
+.title::after {
+  content: "•";
+  margin-right: 0.3rem;
+  margin-left: 0.3rem;
+}
+.description_container {
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 320px;
+  padding: 1rem;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+.description_container p {
+  margin-bottom: 0.5rem;
+}
+@media (1024px <= width) {
+  .description_container {
+    max-width: 1200px;
+    align-items: center;
+  }
 }

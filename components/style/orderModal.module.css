@@ -1,101 +1,71 @@
 .modal {
-    display: flex;
-    flex-direction: column;
+  min-width: 100%;
 }
-
-.user_info {
-    display: row;
-    flex-direction: column;
-    border-bottom: 2px solid gray;
-    margin-bottom: 15px;
+.modal_container {
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  min-width: 230px;
+  font-family: Georgia, "Times New Roman", Times, serif;
 }
-
-.user_info div {
-    margin-bottom: 10px;
+.modal_container div {
+  margin-bottom: 0.3rem;
 }
-
-.address_form {
-    margin-left: -60px;
-}
-
-.books_info {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    font-size: 12px;
-}
-
-.books_info div {
-    margin-left: 3px;
-    margin-bottom: 5px;
-}
-
-.total_price b {
-    color: #ff0141;
-}
-
-.total_price {
-    margin-top: 15px;
-    font-weight: bold;
-    color: #1677ff;
-
-}
-
-.confirm {
-    text-transform: uppercase;
-    margin-left: 20px;
-    margin-top: 5px;
-}
-
-.radio_buttons {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
-.address_box {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    border: 1px;
-    background-color: #e6f4ff;
-    color: #1677ff;
-    border-radius: 5px;
-    width: fit-content;
-    padding: 10px;
-    font-size: 11px;
-}
-
-.address_box div {
-    margin-left: 5px;
-}
-
-.address_title,
-.order_title {
-    color: #1677ff;
-    font-weight: bolder;
-    margin-bottom: 10px;
-}
-
+.user_info,
 .books {
-    border-bottom: 2px solid gray;
-    padding-bottom: 10px;
-
+  border-bottom: 0.1rem solid gray;
+}
+.user_info {
+  display: flex;
+  flex-direction: column;
+}
+.modal_container b {
+  color: #ff0141;
+}
+.modal_container h2 {
+  margin-bottom: 0.5rem;
+}
+.address_box {
+  display: flex;
+  flex-direction: column;
+  border: 0.1rem;
+  background-color: #e6f4ff;
+  color: #1677ff;
+  border-radius: 0.5rem;
+  width: 10rem;
+  min-height: 8rem;
+  padding: 0.5rem;
+}
+.radio_buttons {
+  display: flex;
+  flex-wrap: wrap;
+}
+.books_info {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 0.1rem dashed gray;
+}
+.books_info div {
+  margin-right: 0.3rem;
+}
+.books_info:last-child {
+  border: none;
+}
+.confirm {
+  text-transform: uppercase;
+}
+.address_form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 0.1rem solid #1677ff;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
 }
 
-.address_info {
-    display: flex;
-    flex-direction: column;
-}
-
-.address_button {
-    border: 1px;
-    background-color: #e6f4ff;
-    color: #1677ff;
-    border-radius: 5px;
-    padding: 15px;
-    height: 50px;
-    font-size: 11px;
-    margin-left: 23px;
-    margin-bottom: 8px;
+.address_info button {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }

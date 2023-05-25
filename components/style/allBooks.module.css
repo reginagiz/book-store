@@ -1,10 +1,22 @@
-.listBooks{
-    display:flex;
-    flex-direction: row;
-    margin: 50px;
-    flex-wrap:wrap;
-    justify-content: space-around;
-    align-items: flex-start;
+.listBooks {
+  min-width: 100%;
 }
-
-
+.listBooks_container {
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 320px;
+  padding: 1rem;
+  flex-wrap: wrap;
+}
+@media (width < 768px) {
+  .listBooks_container {
+    flex-direction: column;
+  }
+}
+@media (1024px <= width) {
+  .listBooks_container {
+    max-width: 1200px;
+  }
+}

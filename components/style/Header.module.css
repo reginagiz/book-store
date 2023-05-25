@@ -1,63 +1,48 @@
 .header {
-    display: flex;
-    flex-direction: row;
-    height: 100px;
-    align-items: center;
-    width: 100%;
+  min-width: 100%;
 }
 
-.logobox img {
-    display: flex;
-    justify-content: flex-start;
-    margin: 0;
-    width: 200px;
-    height: 180px;
-    margin-left: 70px;
-    margin-top: 30px;
+.header_container {
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  min-width: 320px;
+  padding: 1rem;
+}
+.logo_container,
+.title {
+  border: none;
+  background-color: inherit;
 }
 
-.buttons {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    width: 100%;
-    flex-direction: row;
-    align-items: center;
-    margin-right: 120px;
+.logo_container {
+  max-width: 25rem;
+  height: 6rem;
+}
+.logo_container:hover {
+  transform: scale(1.1);
 }
 
-.user_button {
-    margin-right: 30px;
-    display: flex;
-    flex-direction: column;
-    margin-top: 30px;
+.logo_container img {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
 }
 
-.user_button_auth {
-    margin-right: 30px;
-    display: flex;
-    flex-direction: column;
+.header_buttons {
+  display: flex;
+  justify-content: space-between;
+  min-width: 7rem;
+  margin-right: 0.8rem;
 }
-
-.user_name {
-    font-size: 12px;
-    margin-top: 10px;
-    margin-left: -25px;
+@media (width < 768px) {
+  .header_buttons {
+    margin-left: 1rem;
+  }
 }
-
-.books {
-    display: flex;
-    text-transform: uppercase;
-    font-size: large;
-    align-items: flex-end;
-    justify-content: center;
-    width: 100%;
-    background-color: inherit;
-    border: none;
-    margin-left: 180px;
-    margin-top: 60px;
-}
-
-.books:hover {
-    transform: scale(1.2);
+@media (1024px <= width) {
+  .header_container {
+    max-width: 1200px;
+  }
 }
